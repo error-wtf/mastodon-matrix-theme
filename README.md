@@ -120,15 +120,67 @@ The theme supports multiple color variants:
 
 ```
 mastodon-matrix-theme/
-├── README.md                    # This file
-├── LICENSE                      # AGPLv3 License
-├── styles/
-│   └── matrix_theme.scss        # Main theme stylesheet
-├── js/
-│   └── matrix_rain.js           # Matrix rain animation
-├── screenshots/
-│   └── preview.png              # Theme preview
-└── install.sh                   # Installation script
+├── README.md                      # This file
+├── LICENSE                        # AGPLv3 License
+├── install.sh                     # Installation script
+│
+├── styles/                        # SCSS Themes
+│   ├── matrix_theme.scss          # Full theme (3200+ lines, toggle)
+│   └── matrix_theme_standalone.scss # Simple always-on version
+│
+├── js/                            # JavaScript
+│   ├── matrix_rain.js             # Matrix rain animation + splash
+│   ├── matrix_background.js       # Alternative background effect
+│   └── matrix_theme.ts            # Theme toggle controller (TS)
+│
+├── terminal/                      # Landing Page Terminal
+│   ├── index.html                 # Main terminal page
+│   ├── main.js                    # Terminal JavaScript
+│   ├── main.css                   # Terminal styles
+│   ├── tetris.html                # Easter egg: Tetris game!
+│   ├── tetris-script.js           # Tetris game logic
+│   ├── tetris-style.css           # Tetris styles
+│   └── talk_db_*.json             # AI chat character databases
+│
+├── rails/                         # Rails integration
+│   └── matrix_controller.rb       # Controller for terminal routes
+│
+└── screenshots/
+    └── preview.png                # Theme preview
+```
+
+## Terminal Landing Page
+
+The Matrix Terminal is a cyberpunk-style landing page with:
+
+- **Interactive command line** - Type commands to interact
+- **"Enter Matrix" challenge** - Users type "enter matrix" to proceed
+- **AI Characters** - Chat with Neo, Morpheus, Trinity, Oracle, Smith
+- **Easter Egg** - Hidden Tetris game!
+- **Bot protection** - Prevents automated scrapers
+
+### Terminal Commands
+
+| Command | Effect |
+|---------|--------|
+| `enter matrix` | Proceed to main site |
+| `help` | Show available commands |
+| `neo` / `morpheus` / `trinity` | Chat with characters |
+| `tetris` | Play hidden Tetris game |
+| `clear` | Clear terminal |
+
+### Install Terminal
+
+```bash
+# Copy to Mastodon public folder
+cp -r terminal/ /path/to/mastodon/public/matrix/
+
+# Add route (config/routes.rb)
+get '/matrix', to: 'matrix#index'
+post '/matrix/pass', to: 'matrix#pass'
+
+# Copy controller
+cp rails/matrix_controller.rb /path/to/mastodon/app/controllers/
 ```
 
 ## Browser Support

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERRORDON - Enter The Matrix</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/matrix/main.css">
+</head>
+<body>
+    <canvas id="matrixCanvas"></canvas>
+    
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-screen">
+        <h1 class="matrix-title">ERRORDON</h1>
+        <p class="tagline">A Safe Fediverse Instance</p>
+        <p class="rules">🛡️ No Porn • No Hate • No Fascism</p>
+        <div class="login-form">
+            <input type="text" id="usernameInput" placeholder="Enter your name..." maxlength="20" autocomplete="off" autofocus>
+            <button id="connectBtn">CONNECT</button>
+        </div>
+        <p class="hint">Type "enter matrix" after connecting to access the network</p>
+    </div>
+
+    <!-- Terminal -->
+    <div id="terminal" class="terminal">
+        <div class="terminal-header">
+            <span class="terminal-title">ERRORDON TERMINAL v1.0</span>
+            <div class="terminal-buttons">
+                <span id="logoutBtn" title="Disconnect">×</span>
+            </div>
+        </div>
+        <div id="output" class="terminal-output"></div>
+        <div class="terminal-input-line">
+            <span id="prompt" class="prompt">guest@errordon:~$</span>
+            <input type="text" id="commandInput" class="terminal-input" autocomplete="off">
+        </div>
+    </div>
+
+    <!-- Tetris Overlay -->
+    <div id="tetrisOverlay">
+        <button id="tetrisClose">← RETURN TO TERMINAL</button>
+        <iframe id="tetrisFrame" src=""></iframe>
+    </div>
+
+<script src="/matrix/main.js?v=4"></script>
+</body>
+</html>
