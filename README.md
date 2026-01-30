@@ -200,22 +200,29 @@ MATRIX_COLOR=purple   # Cyberpunk purple
 ## 😀 Custom Emojis Installation
 
 ```bash
-# 1. Copy all emojis to Mastodon's custom emoji folder
+# 1. Copy tech emojis (always included)
 cp emojis/*.svg /path/to/mastodon/public/emoji/custom/
 
-# 2. Import via Rails console (or toot_ctl)
+# 2. OPTIONAL: Copy political emojis (PNG files)
+# These include: :acab: :antifa: :fcknzs: :no_nazis: :resist: :anarchist: :antifascist: :naturfreund:
+cp emojis/*.png /path/to/mastodon/public/emoji/custom/
+
+# 3. Import via Rails console (or tootctl)
 cd /path/to/mastodon
 RAILS_ENV=production bin/rails c
 
 # In Rails console:
-Dir.glob('public/emoji/custom/*.svg').each do |path|
-  shortcode = File.basename(path, '.svg')
+Dir.glob('public/emoji/custom/*.{svg,png}').each do |path|
+  ext = File.extname(path)
+  shortcode = File.basename(path, ext)
   CustomEmoji.find_or_create_by!(shortcode: shortcode) do |e|
     e.image = File.open(path)
     e.visible_in_picker = true
   end
 end
 ```
+
+> **Note:** The `install.sh` script will ask if you want to include political emojis.
 
 ### Popular Emojis Included
 
@@ -231,6 +238,21 @@ end
 | 🔒 | `:vpn:` `:tor:` | Privacy |
 | 💀 | `:skull_matrix:` | Matrix skull |
 | 🤖 | `:robot:` `:cyborg:` | Robots |
+
+### 🏴 Political Emojis (Optional)
+
+These are included but **optional** during installation:
+
+| Emoji | Shortcode | Description |
+|-------|-----------|-------------|
+| 🏴 | `:acab:` | 1312 |
+| 🏴 | `:antifa:` | Antifascist Action logo |
+| 🏴 | `:fcknzs:` | FCK NZS |
+| 🏴 | `:no_nazis:` | NO NZS |
+| 🏴 | `:resist:` | RESIST |
+| 🏴 | `:anarchist:` | ANARCHY |
+| 🏴 | `:antifascist:` | ANTIFA |
+| 🌿 | `:naturfreund:` | Naturfreunde |
 
 ---
 

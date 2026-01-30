@@ -54,7 +54,24 @@ echo "🖥️ Installing Terminal..."
 cp -r "$THEME_DIR/terminal/"* "$MASTODON_PATH/public/matrix/"
 
 echo "😀 Installing Emojis..."
+# Copy all SVG emojis (tech/hacker themed)
 cp "$THEME_DIR/emojis/"*.svg "$MASTODON_PATH/public/emoji/custom/"
+
+# Political emojis (optional)
+echo ""
+echo "🏴 Political Emojis"
+echo "   The theme includes optional political emojis:"
+echo "   :acab: :antifa: :fcknzs: :no_nazis: :resist: :anarchist: :antifascist: :naturfreund:"
+echo ""
+read -p "   Install political emojis? [y/N]: " INSTALL_POLITICAL
+if [[ "$INSTALL_POLITICAL" =~ ^[Yy]$ ]]; then
+    echo "   Installing political emojis..."
+    cp "$THEME_DIR/emojis/"*.png "$MASTODON_PATH/public/emoji/custom/"
+    echo "   ✅ Political emojis installed"
+else
+    echo "   ⏭️  Skipping political emojis"
+fi
+echo ""
 
 echo "🛤️ Installing Rails files..."
 cp "$THEME_DIR/rails/matrix_controller.rb" "$MASTODON_PATH/app/controllers/"
