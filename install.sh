@@ -55,13 +55,9 @@ cp -r "$THEME_DIR/terminal/"* "$MASTODON_PATH/public/matrix/"
 
 echo "😀 Installing Emojis..."
 
-# Check for ImageMagick
-if ! command -v convert &> /dev/null; then
-    echo "⚠️  ImageMagick not found. Installing SVGs directly (may not display correctly)."
-    echo "   For best results, install ImageMagick: apt install imagemagick"
-    cp "$THEME_DIR/emojis/"*.svg "$MASTODON_PATH/public/emoji/custom/"
-else
-    echo "   Converting SVG emojis to high-quality PNG (128x128)..."
+# Check for rsvg-convert (best quality) or ImageMagick
+if command -v rsvg-convert &> /dev/null; then
+    echo "   Converting SVG emojis to high-quality PNG using rsvg-convert..."
     EMOJI_COUNT=0
     for svg in "$THEME_DIR/emojis/"*.svg; do
         name=$(basename "$svg" .svg)
@@ -69,10 +65,26 @@ else
         if [[ "$name" =~ ^(acab|antifa|fcknzs|no_nazis|resist|anarchist|antifascist|naturfreund)$ ]]; then
             continue
         fi
+        rsvg-convert -w 128 -h 128 "$svg" -o "$MASTODON_PATH/public/emoji/custom/${name}.png" 2>/dev/null
+        ((EMOJI_COUNT++))
+    done
+    echo "   ✅ Converted $EMOJI_COUNT tech emojis to PNG (rsvg)"
+elif command -v convert &> /dev/null; then
+    echo "   Converting SVG emojis to PNG using ImageMagick..."
+    EMOJI_COUNT=0
+    for svg in "$THEME_DIR/emojis/"*.svg; do
+        name=$(basename "$svg" .svg)
+        if [[ "$name" =~ ^(acab|antifa|fcknzs|no_nazis|resist|anarchist|antifascist|naturfreund)$ ]]; then
+            continue
+        fi
         convert -background none -resize 128x128 "$svg" "$MASTODON_PATH/public/emoji/custom/${name}.png" 2>/dev/null
         ((EMOJI_COUNT++))
     done
-    echo "   ✅ Converted $EMOJI_COUNT tech emojis to PNG"
+    echo "   ✅ Converted $EMOJI_COUNT tech emojis to PNG (ImageMagick)"
+else
+    echo "⚠️  No SVG converter found. Using pre-converted PNGs..."
+    echo "   For best results, install: apt install librsvg2-bin"
+    cp "$THEME_DIR/emojis/"*.png "$MASTODON_PATH/public/emoji/custom/"
 fi
 
 # Political emojis (optional) - pre-converted high-quality PNGs
