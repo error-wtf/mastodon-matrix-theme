@@ -199,11 +199,30 @@ MATRIX_COLOR=purple   # Cyberpunk purple
 
 ## 😀 Custom Emojis Installation
 
-```bash
-# 1. Copy tech emojis (always included)
-cp emojis/*.svg /path/to/mastodon/public/emoji/custom/
+> **Recommended:** Use `install.sh` which automatically converts SVGs to high-quality PNGs.
 
-# 2. OPTIONAL: Copy political emojis (PNG files)
+### Automatic Installation (Recommended)
+
+```bash
+# Requires ImageMagick for best quality
+apt install imagemagick
+
+# Run installer - converts all SVGs to 128x128 PNGs
+./install.sh /path/to/mastodon
+```
+
+### Manual Installation
+
+```bash
+# 1. Convert SVG emojis to PNG (128x128) for best display
+mkdir -p /path/to/mastodon/public/emoji/custom
+for svg in emojis/*.svg; do
+    name=$(basename "$svg" .svg)
+    convert -background none -resize 128x128 "$svg" \
+        "/path/to/mastodon/public/emoji/custom/${name}.png"
+done
+
+# 2. OPTIONAL: Copy political emojis (pre-converted PNGs)
 # These include: :acab: :antifa: :fcknzs: :no_nazis: :resist: :anarchist: :antifascist: :naturfreund:
 cp emojis/*.png /path/to/mastodon/public/emoji/custom/
 
@@ -212,9 +231,8 @@ cd /path/to/mastodon
 RAILS_ENV=production bin/rails c
 
 # In Rails console:
-Dir.glob('public/emoji/custom/*.{svg,png}').each do |path|
-  ext = File.extname(path)
-  shortcode = File.basename(path, ext)
+Dir.glob('public/emoji/custom/*.png').each do |path|
+  shortcode = File.basename(path, '.png')
   CustomEmoji.find_or_create_by!(shortcode: shortcode) do |e|
     e.image = File.open(path)
     e.visible_in_picker = true

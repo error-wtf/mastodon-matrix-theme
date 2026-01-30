@@ -54,10 +54,28 @@ echo "🖥️ Installing Terminal..."
 cp -r "$THEME_DIR/terminal/"* "$MASTODON_PATH/public/matrix/"
 
 echo "😀 Installing Emojis..."
-# Copy all SVG emojis (tech/hacker themed)
-cp "$THEME_DIR/emojis/"*.svg "$MASTODON_PATH/public/emoji/custom/"
 
-# Political emojis (optional)
+# Check for ImageMagick
+if ! command -v convert &> /dev/null; then
+    echo "⚠️  ImageMagick not found. Installing SVGs directly (may not display correctly)."
+    echo "   For best results, install ImageMagick: apt install imagemagick"
+    cp "$THEME_DIR/emojis/"*.svg "$MASTODON_PATH/public/emoji/custom/"
+else
+    echo "   Converting SVG emojis to high-quality PNG (128x128)..."
+    EMOJI_COUNT=0
+    for svg in "$THEME_DIR/emojis/"*.svg; do
+        name=$(basename "$svg" .svg)
+        # Skip political emojis (they have separate PNGs)
+        if [[ "$name" =~ ^(acab|antifa|fcknzs|no_nazis|resist|anarchist|antifascist|naturfreund)$ ]]; then
+            continue
+        fi
+        convert -background none -resize 128x128 "$svg" "$MASTODON_PATH/public/emoji/custom/${name}.png" 2>/dev/null
+        ((EMOJI_COUNT++))
+    done
+    echo "   ✅ Converted $EMOJI_COUNT tech emojis to PNG"
+fi
+
+# Political emojis (optional) - pre-converted high-quality PNGs
 echo ""
 echo "🏴 Political Emojis"
 echo "   The theme includes optional political emojis:"
