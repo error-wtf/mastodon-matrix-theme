@@ -28,60 +28,53 @@ A cyberpunk Matrix-style theme for Mastodon instances.
 
 ## Installation
 
-### Method 1: Manual Installation
+### Quick Install (Standalone - Always On)
 
-1. **Copy the SCSS file** to your Mastodon instance:
-
-```bash
-cp styles/matrix_theme.scss /path/to/mastodon/app/javascript/styles/
-```
-
-2. **Copy the Matrix rain JS** (optional):
+Use `matrix_theme_standalone.scss` for a simple always-on theme:
 
 ```bash
-cp js/matrix_rain.js /path/to/mastodon/app/javascript/
-```
+# Copy to Mastodon
+cp styles/matrix_theme_standalone.scss /path/to/mastodon/app/javascript/styles/
 
-3. **Import in your application.scss**:
+# Add to application.scss (at the end)
+echo "@import 'matrix_theme_standalone';" >> app/javascript/styles/application.scss
 
-```scss
-// At the end of app/javascript/styles/application.scss
-@import 'matrix_theme';
-```
-
-4. **Rebuild assets**:
-
-```bash
+# Rebuild & restart
 RAILS_ENV=production bundle exec rails assets:precompile
-```
-
-5. **Restart Mastodon**:
-
-```bash
 systemctl restart mastodon-web mastodon-sidekiq
 ```
 
-### Method 2: As Mastodon Skin
+### Advanced Install (Toggleable Theme)
 
-1. Create a new skin file:
+Use `matrix_theme.scss` for a full-featured toggleable theme:
 
+1. **Copy files**:
 ```bash
-# app/javascript/styles/mastodon/matrix.scss
-@import 'application';
-@import '../matrix_theme';
+cp styles/matrix_theme.scss /path/to/mastodon/app/javascript/styles/
+cp js/matrix_rain.js /path/to/mastodon/app/javascript/mastodon/features/matrix/
 ```
 
-2. Register the skin in `config/themes.yml`:
+2. **Create a Mastodon skin** (`app/javascript/styles/mastodon/matrix.scss`):
+```scss
+@import 'application';
+@import '../matrix_theme';
 
+// Apply theme globally
+body {
+  @extend .theme-matrix;
+}
+```
+
+3. **Register in `config/themes.yml`**:
 ```yaml
 default: styles/mastodon/default.scss
 matrix: styles/mastodon/matrix.scss
 contrast: styles/mastodon/contrast.scss
 ```
 
-3. Rebuild and restart.
+4. **Rebuild & restart**
 
-Users can then select "Matrix" in their appearance settings.
+Users can select "Matrix" in Preferences → Appearance.
 
 ## Configuration
 

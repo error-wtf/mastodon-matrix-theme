@@ -1,0 +1,349 @@
+// ============================================================================
+// MASTODON MATRIX THEME - STANDALONE VERSION
+// This version applies globally without requiring a body class
+// For Mastodon 4.x
+// ============================================================================
+
+// =============================================================================
+// COLOR PALETTE
+// =============================================================================
+
+$matrix-green: #00ff00;
+$matrix-green-dark: #00cc00;
+$matrix-green-glow: rgba(0, 255, 0, 0.5);
+$matrix-green-subtle: rgba(0, 255, 0, 0.1);
+
+$matrix-black: #000000;
+$matrix-dark: #0a0a0a;
+$matrix-surface: #0d0d0d;
+$matrix-text: #ffffff;
+$matrix-text-secondary: #b0b0b0;
+$matrix-error: #ff3333;
+
+// CSS Variables for easy customization
+:root {
+  --matrix-primary: #{$matrix-green};
+  --matrix-primary-dark: #{$matrix-green-dark};
+  --matrix-primary-glow: #{$matrix-green-glow};
+  --matrix-primary-subtle: #{$matrix-green-subtle};
+  --matrix-primary-rgb: 0, 255, 0;
+  --matrix-bg: #{$matrix-dark};
+  --matrix-surface: #{$matrix-surface};
+  --matrix-text: #{$matrix-text};
+}
+
+// Hacker Fonts
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Fira+Code&display=swap');
+$font-hacker: 'VT323', 'Courier New', monospace;
+
+// =============================================================================
+// GLOBAL STYLES
+// =============================================================================
+
+body {
+  background: var(--matrix-bg) !important;
+  color: var(--matrix-text) !important;
+}
+
+// =============================================================================
+// UI COLUMNS
+// =============================================================================
+
+.ui {
+  background: var(--matrix-bg) !important;
+}
+
+.columns-area {
+  background: var(--matrix-bg) !important;
+}
+
+.column {
+  background: var(--matrix-surface) !important;
+  border: 1px solid rgba(var(--matrix-primary-rgb), 0.3) !important;
+}
+
+.column-header {
+  background: rgba(0, 0, 0, 0.9) !important;
+  border-bottom: 1px solid var(--matrix-primary) !important;
+  color: var(--matrix-text) !important;
+  
+  &__title {
+    color: var(--matrix-primary) !important;
+    font-family: $font-hacker !important;
+  }
+  
+  &__button {
+    color: var(--matrix-text) !important;
+    
+    &:hover {
+      color: var(--matrix-primary) !important;
+    }
+  }
+}
+
+// =============================================================================
+// COMPOSE BOX
+// =============================================================================
+
+.compose-form {
+  background: rgba(0, 0, 0, 0.8) !important;
+  
+  .autosuggest-textarea__textarea,
+  .spoiler-input__input {
+    background: rgba(0, 0, 0, 0.6) !important;
+    color: var(--matrix-text) !important;
+    border: 1px solid rgba(var(--matrix-primary-rgb), 0.3) !important;
+    
+    &:focus {
+      border-color: var(--matrix-primary) !important;
+      box-shadow: 0 0 10px var(--matrix-primary-glow) !important;
+    }
+  }
+}
+
+// =============================================================================
+// STATUSES / POSTS
+// =============================================================================
+
+.status {
+  background: rgba(0, 0, 0, 0.6) !important;
+  border-bottom: 1px solid rgba(var(--matrix-primary-rgb), 0.2) !important;
+  
+  &:hover {
+    background: rgba(var(--matrix-primary-rgb), 0.05) !important;
+  }
+  
+  &__content {
+    color: var(--matrix-text) !important;
+    
+    a {
+      color: var(--matrix-primary) !important;
+      
+      &:hover {
+        text-shadow: 0 0 10px var(--matrix-primary-glow) !important;
+      }
+    }
+  }
+  
+  &__display-name {
+    strong {
+      color: var(--matrix-primary) !important;
+      font-family: $font-hacker !important;
+    }
+  }
+}
+
+// =============================================================================
+// NAVIGATION
+// =============================================================================
+
+.navigation-panel {
+  background: rgba(0, 0, 0, 0.9) !important;
+  
+  a {
+    color: var(--matrix-text) !important;
+    
+    &:hover, &.active {
+      color: var(--matrix-primary) !important;
+      background: rgba(var(--matrix-primary-rgb), 0.1) !important;
+    }
+  }
+}
+
+.column-link {
+  color: var(--matrix-text) !important;
+  
+  &:hover, &.active {
+    color: var(--matrix-primary) !important;
+    background: rgba(var(--matrix-primary-rgb), 0.1) !important;
+  }
+  
+  .icon {
+    color: inherit !important;
+  }
+}
+
+// =============================================================================
+// BUTTONS
+// =============================================================================
+
+.button {
+  background: var(--matrix-primary) !important;
+  color: $matrix-black !important;
+  font-family: $font-hacker !important;
+  border: none !important;
+  
+  &:hover {
+    background: var(--matrix-primary-dark) !important;
+    box-shadow: 0 0 15px var(--matrix-primary-glow) !important;
+  }
+}
+
+.icon-button {
+  color: var(--matrix-text-secondary) !important;
+  
+  &:hover, &.active {
+    color: var(--matrix-primary) !important;
+  }
+}
+
+// =============================================================================
+// ACCOUNT CARDS
+// =============================================================================
+
+.account {
+  background: rgba(0, 0, 0, 0.6) !important;
+  border-bottom: 1px solid rgba(var(--matrix-primary-rgb), 0.2) !important;
+  
+  &__display-name {
+    color: var(--matrix-primary) !important;
+    font-family: $font-hacker !important;
+  }
+  
+  &__header {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%) !important;
+  }
+}
+
+// =============================================================================
+// SCROLLBARS
+// =============================================================================
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--matrix-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--matrix-primary);
+  border-radius: 4px;
+  
+  &:hover {
+    background: var(--matrix-primary-dark);
+  }
+}
+
+// =============================================================================
+// INPUTS & FORMS
+// =============================================================================
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+textarea,
+select {
+  background: rgba(0, 0, 0, 0.6) !important;
+  color: var(--matrix-text) !important;
+  border: 1px solid rgba(var(--matrix-primary-rgb), 0.3) !important;
+  
+  &:focus {
+    border-color: var(--matrix-primary) !important;
+    box-shadow: 0 0 10px var(--matrix-primary-glow) !important;
+  }
+  
+  &::placeholder {
+    color: var(--matrix-text-secondary) !important;
+  }
+}
+
+// =============================================================================
+// MODALS & DROPDOWNS
+// =============================================================================
+
+.modal-root__modal {
+  background: rgba(0, 0, 0, 0.95) !important;
+  border: 1px solid var(--matrix-primary) !important;
+  box-shadow: 0 0 30px var(--matrix-primary-glow) !important;
+}
+
+.dropdown-menu {
+  background: rgba(0, 0, 0, 0.95) !important;
+  border: 1px solid var(--matrix-primary) !important;
+  
+  &__item {
+    a {
+      color: var(--matrix-text) !important;
+      
+      &:hover {
+        background: rgba(var(--matrix-primary-rgb), 0.2) !important;
+        color: var(--matrix-primary) !important;
+      }
+    }
+  }
+}
+
+// =============================================================================
+// NOTIFICATIONS
+// =============================================================================
+
+.notification {
+  background: rgba(0, 0, 0, 0.6) !important;
+  border-bottom: 1px solid rgba(var(--matrix-primary-rgb), 0.2) !important;
+  
+  &__message {
+    color: var(--matrix-text) !important;
+  }
+}
+
+// =============================================================================
+// HASHTAGS & TRENDS
+// =============================================================================
+
+.hashtag {
+  color: var(--matrix-primary) !important;
+  
+  &:hover {
+    text-shadow: 0 0 10px var(--matrix-primary-glow) !important;
+  }
+}
+
+.trends__item {
+  background: rgba(0, 0, 0, 0.6) !important;
+  border-bottom: 1px solid rgba(var(--matrix-primary-rgb), 0.2) !important;
+  
+  &__name a {
+    color: var(--matrix-primary) !important;
+  }
+}
+
+// =============================================================================
+// MEDIA
+// =============================================================================
+
+.media-gallery {
+  border: 1px solid rgba(var(--matrix-primary-rgb), 0.3) !important;
+  border-radius: 8px !important;
+}
+
+.video-player {
+  background: $matrix-black !important;
+  border: 1px solid rgba(var(--matrix-primary-rgb), 0.3) !important;
+}
+
+// =============================================================================
+// LOADING & SPINNERS
+// =============================================================================
+
+.loading-indicator {
+  color: var(--matrix-primary) !important;
+}
+
+// =============================================================================
+// GLITCH EFFECT (optional hover effect)
+// =============================================================================
+
+@keyframes glitch {
+  0%, 100% { text-shadow: 2px 0 #ff0000, -2px 0 #00ffff; }
+  25% { text-shadow: -2px 0 #ff0000, 2px 0 #00ffff; }
+  50% { text-shadow: 2px 2px #ff0000, -2px -2px #00ffff; }
+  75% { text-shadow: -2px 2px #ff0000, 2px -2px #00ffff; }
+}
+
+.display-name:hover strong {
+  animation: glitch 0.3s ease-in-out;
+}
