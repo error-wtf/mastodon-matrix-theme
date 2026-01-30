@@ -68,7 +68,7 @@ mastodon-matrix-theme/
 ├── rails/                              # 🛤️ Rails Integration
 │   ├── matrix_controller.rb            # Terminal routes controller
 │   ├── initializers/
-│   │   └── errordon_theme.rb           # Theme configuration
+│   │   └── matrix_theme.rb             # Theme configuration
 │   ├── entrypoints/
 │   │   └── common.ts                   # JS entrypoint example
 │   └── views/
@@ -278,8 +278,8 @@ sudo systemctl start mastodon
 
 ```bash
 # Theme settings
-ERRORDON_MATRIX_THEME_ENABLED=true   # Enable Matrix theme by default
-ERRORDON_THEME=matrix                # Theme name
+MATRIX_THEME_ENABLED=true            # Enable Matrix theme by default
+MATRIX_THEME=matrix                  # Theme name
 MATRIX_COLOR=green                   # Color variant
 
 # Terminal protection
@@ -317,7 +317,7 @@ Edit `terminal/talk_db_*.json` files for character responses.
 
 ## 🏷️ Rebrand to Your Instance Name
 
-Want to change "Errordon" to your own instance name? Use the rebrand scripts:
+Want to change "Matrix" to your own instance name? Use the rebrand scripts:
 
 ### Linux/macOS
 ```bash
@@ -333,11 +333,11 @@ Want to change "Errordon" to your own instance name? Use the rebrand scripts:
 
 | Category | Before | After |
 |----------|--------|-------|
-| Display names | ERRORDON | YOURNAME |
-| File names | `errordon_matrix.scss` | `yourname_matrix.scss` |
-| Environment vars | `ERRORDON_THEME` | `YOURNAME_THEME` |
-| Ruby namespace | `Errordon::` | `Yourname::` |
-| localStorage | `errordon_matrix_theme` | `yourname_matrix_theme` |
+| Display names | MATRIX TERMINAL | YOURNAME TERMINAL |
+| Terminal prompt | `guest@matrix:~$` | `guest@yourname:~$` |
+| Environment vars | `MATRIX_THEME` | `YOURNAME_THEME` |
+| Ruby namespace | `Matrix::` | `Yourname::` |
+| File names | `matrix_theme.rb` | `yourname_theme.rb` |
 
 📖 See [docs/BRANDING.md](docs/BRANDING.md) for detailed manual instructions.
 

@@ -1,7 +1,7 @@
-// Errordon Matrix Theme Controller
+// MATRIX Matrix Theme Controller
 // Applies and manages the Matrix cyberpunk theme
 
-const THEME_KEY = 'errordon_matrix_theme';
+const THEME_KEY = 'MATRIX_matrix_theme';
 const MATRIX_CLASS = 'theme-matrix';
 
 export type ThemeName = 'matrix' | 'default' | 'light';
@@ -36,7 +36,7 @@ export const getStoredTheme = (): ThemeName => {
     return stored as ThemeName;
   }
   // If no localStorage preference, check if server enabled Matrix theme
-  // Server adds 'theme-matrix' class when ERRORDON_MATRIX_THEME_ENABLED=true
+  // Server adds 'theme-matrix' class when MATRIX_MATRIX_THEME_ENABLED=true
   if (document.body.classList.contains('theme-matrix')) {
     return 'matrix';
   }
@@ -64,7 +64,7 @@ export const setTheme = (themeName: ThemeName): void => {
 
   // Dispatch event for other components
   window.dispatchEvent(
-    new CustomEvent('errordon:theme-change', { detail: { theme: themeName } })
+    new CustomEvent('MATRIX:theme-change', { detail: { theme: themeName } })
   );
 };
 

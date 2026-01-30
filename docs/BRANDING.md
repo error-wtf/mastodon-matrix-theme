@@ -1,6 +1,6 @@
-# 🎨 Branding Guide - Change "Errordon" to Your Name
+# 🎨 Branding Guide - Customize Your Instance Name
 
-This guide explains how to rebrand the Matrix theme from "Errordon" to your own instance name.
+This guide explains how to rebrand the Matrix theme from "Matrix" to your own instance name.
 
 ## Quick Start
 
@@ -18,15 +18,15 @@ Use the automated rebrand script:
 
 | Category | Examples |
 |----------|----------|
-| **Display Names** | "ERRORDON", "Errordon", "errordon" |
-| **File Names** | `errordon_matrix.scss` → `yourname_matrix.scss` |
-| **Directory Names** | `errordon/` → `yourname/` |
-| **Environment Variables** | `ERRORDON_THEME` → `YOURNAME_THEME` |
-| **Ruby Namespace** | `Errordon::` → `Yourname::` |
-| **LocalStorage Keys** | `errordon_matrix_theme` → `yourname_matrix_theme` |
-| **CSS Meta Tags** | `errordon-matrix-color` → `yourname-matrix-color` |
-| **Console Logs** | `[Errordon]` → `[Yourname]` |
-| **Service Names** | `errordon.service` → `yourname.service` |
+| **Display Names** | "MATRIX TERMINAL" → "YOURNAME TERMINAL" |
+| **Terminal Prompts** | `guest@matrix:~$` → `guest@yourname:~$` |
+| **Environment Variables** | `MATRIX_THEME` → `YOURNAME_THEME` |
+| **Ruby Namespace** | `Matrix::` → `Yourname::` |
+| **LocalStorage Keys** | `matrix_matrix_theme` → `yourname_matrix_theme` |
+| **Console Logs** | `[Matrix]` → `[Yourname]` |
+| **File Names** | `matrix_theme.rb` → `yourname_theme.rb` |
+
+**Note:** CSS class names like `.matrix-splash`, `.theme-matrix` are NOT changed (they're internal identifiers).
 
 ---
 
@@ -40,7 +40,7 @@ Rename and update `styles/matrix_theme.scss`:
 
 ```scss
 // Line 1-3: Change header comment
-// ERRORDON MATRIX THEME  →  YOURNAME MATRIX THEME
+// MATRIX THEME  →  YOURNAME THEME
 ```
 
 After installation, rename the file:
@@ -59,11 +59,11 @@ Update `common.scss`:
 **js/matrix_rain.js:**
 ```javascript
 // Change all occurrences:
-// - 'errordon_matrix_color' → 'yourname_matrix_color'
-// - 'errordon_matrix_theme' → 'yourname_matrix_theme'
-// - 'errordon:color-change' → 'yourname:color-change'
-// - '[Errordon]' → '[Yourname]'
-// - 'ERRORDON' → 'YOURNAME'
+// - 'matrix_matrix_color' → 'yourname_matrix_color'
+// - 'matrix_matrix_theme' → 'yourname_matrix_theme'
+// - 'matrix:color-change' → 'yourname:color-change'
+// - '[Matrix]' → '[Yourname]'
+// - 'MATRIX TERMINAL' → 'YOURNAME TERMINAL'
 ```
 
 **js/matrix_theme.ts:**
@@ -76,6 +76,7 @@ const THEME_KEY = 'yourname_matrix_theme';  // was: errordon_matrix_theme
 
 **terminal/index.html:**
 ```html
+<!-- Change display text -->
 <title>YOURNAME - Enter The Matrix</title>
 <h1 class="matrix-title">YOURNAME</h1>
 <span class="terminal-title">YOURNAME TERMINAL v1.0</span>
@@ -85,8 +86,8 @@ const THEME_KEY = 'yourname_matrix_theme';  // was: errordon_matrix_theme
 **terminal/main.js:**
 ```javascript
 promptEl.textContent = username + '@yourname:~$';
-printLine('WELCOME TO YOURNAME - A SAFE FEDIVERSE');
-// ... update all "ERRORDON" references
+printLine('WELCOME TO YOURNAME');
+// ... update all "MATRIX TERMINAL" references
 ```
 
 ### 4. Rails Initializer
@@ -110,11 +111,11 @@ end
 
 Update `.env.production`:
 ```bash
-# Old
-ERRORDON_MATRIX_THEME_ENABLED=true
-ERRORDON_THEME=matrix
+# Old (Matrix default)
+MATRIX_THEME_ENABLED=true
+MATRIX_THEME=matrix
 
-# New
+# New (your instance)
 YOURNAME_MATRIX_THEME_ENABLED=true
 YOURNAME_THEME=matrix
 ```
@@ -123,7 +124,7 @@ YOURNAME_THEME=matrix
 
 **rails/views/application_layout_snippet.haml:**
 ```haml
--# Change all Errordon:: to Yourname::
+-# Change all Matrix:: to Yourname::
 - matrix_color = defined?(Yourname::MATRIX_COLOR) ? Yourname::MATRIX_COLOR : 'green'
 %meta{ name: 'yourname-matrix-color', content: matrix_color }/
 ```

@@ -1,4 +1,4 @@
-// Matrix Rain Background for Errordon
+// Matrix Rain Background for MATRIX
 // Integrated from matrix-full project
 
 class MatrixRain {
@@ -133,7 +133,7 @@ class MatrixSplash {
     this.overlay.innerHTML = `
       <canvas id="splash-matrix-canvas" class="splash-matrix-canvas"></canvas>
       <div class="matrix-splash-content">
-        <h1 class="matrix-splash-title">ERRORDON</h1>
+        <h1 class="matrix-splash-title">MATRIX</h1>
         <p class="matrix-splash-subtitle">The Matrix has you...</p>
         <div class="matrix-splash-terminal">
           <span class="matrix-prompt">root@matrix:~$</span>

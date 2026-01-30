@@ -1,4 +1,4 @@
-// Errordon Matrix Theme Integration
+// MATRIX Matrix Theme Integration
 // Matrix rain background + Enter Matrix splash screen
 // With accessibility support (prefers-reduced-motion) and performance optimizations
 
@@ -37,7 +37,7 @@ const MATRIX_CONFIG = {
  * Get the server-configured default color (from meta tag or ENV)
  */
 function getServerDefaultColor() {
-  const meta = document.querySelector('meta[name="errordon-matrix-color"]');
+  const meta = document.querySelector('meta[name="MATRIX-matrix-color"]');
   return meta?.content || 'green';
 }
 
@@ -45,7 +45,7 @@ function getServerDefaultColor() {
  * Get stored color preference or server default
  */
 function getColorPreference() {
-  const stored = localStorage.getItem('errordon_matrix_color');
+  const stored = localStorage.getItem('MATRIX_matrix_color');
   if (stored && MATRIX_CONFIG.colors[stored]) {
     return stored;
   }
@@ -72,14 +72,14 @@ function applyMatrixColor(color) {
   document.body.classList.add(`matrix-color-${color}`);
   
   // Store preference
-  localStorage.setItem('errordon_matrix_color', color);
+  localStorage.setItem('MATRIX_matrix_color', color);
   
   // Dispatch event for other components
-  window.dispatchEvent(new CustomEvent('errordon:color-change', { 
+  window.dispatchEvent(new CustomEvent('MATRIX:color-change', { 
     detail: { color } 
   }));
   
-  console.log(`[Errordon] Matrix color set to: ${color}`);
+  console.log(`[MATRIX] Matrix color set to: ${color}`);
 }
 
 /**
@@ -134,7 +134,7 @@ function isLowEndDevice() {
  * Get stored intensity preference or auto-detect
  */
 function getIntensityPreference() {
-  const stored = localStorage.getItem('errordon_matrix_intensity');
+  const stored = localStorage.getItem('MATRIX_matrix_intensity');
   if (stored && MATRIX_CONFIG.intensity[stored]) {
     return stored;
   }
@@ -184,7 +184,7 @@ class MatrixRain {
   init() {
     // ACCESSIBILITY: Skip animation if user prefers reduced motion
     if (prefersReducedMotion()) {
-      console.log('[Errordon] Matrix rain disabled (prefers-reduced-motion)');
+      console.log('[MATRIX] Matrix rain disabled (prefers-reduced-motion)');
       document.body.classList.add('matrix-static-background');
       return false;
     }
@@ -219,7 +219,7 @@ class MatrixRain {
     });
     
     this.start();
-    console.log(`[Errordon] Matrix rain initialized (intensity: ${this.intensity})`);
+    console.log(`[MATRIX] Matrix rain initialized (intensity: ${this.intensity})`);
     return true;
   }
 
@@ -303,8 +303,8 @@ class MatrixRain {
     if (!MATRIX_CONFIG.colors[colorName]) return;
     this.colorName = colorName;
     this.colorConfig = MATRIX_CONFIG.colors[colorName];
-    localStorage.setItem('errordon_matrix_color', colorName);
-    console.log(`[Errordon] Matrix rain color set to: ${colorName}`);
+    localStorage.setItem('MATRIX_matrix_color', colorName);
+    console.log(`[MATRIX] Matrix rain color set to: ${colorName}`);
   }
 
   start() {
@@ -356,8 +356,8 @@ class MatrixRain {
     this.intensity = level;
     this.config = MATRIX_CONFIG.intensity[level];
     this.frameInterval = 1000 / this.config.fps;
-    localStorage.setItem('errordon_matrix_intensity', level);
-    console.log(`[Errordon] Matrix intensity set to: ${level}`);
+    localStorage.setItem('MATRIX_matrix_intensity', level);
+    console.log(`[MATRIX] Matrix intensity set to: ${level}`);
   }
 
   destroy() {
@@ -409,7 +409,7 @@ class MatrixSplash {
     this.overlay.id = 'matrix-splash-overlay';
     this.overlay.className = 'matrix-splash-overlay';
     this.overlay.setAttribute('role', 'dialog');
-    this.overlay.setAttribute('aria-label', 'Welcome to Errordon');
+    this.overlay.setAttribute('aria-label', 'Welcome to MATRIX');
     
     // Simplified version for reduced motion
     const canvasHtml = this.reducedMotion 
@@ -419,7 +419,7 @@ class MatrixSplash {
     this.overlay.innerHTML = `
       ${canvasHtml}
       <div class="matrix-splash-content">
-        <h1 class="matrix-splash-title">ERRORDON</h1>
+        <h1 class="matrix-splash-title">MATRIX</h1>
         <p class="matrix-splash-subtitle">The Matrix has you...</p>
         <div class="matrix-splash-terminal">
           <label for="matrix-splash-input" class="visually-hidden">Enter command</label>
@@ -579,7 +579,7 @@ function toggleMatrixTheme() {
   document.body.classList.toggle('theme-matrix');
   
   const isMatrix = document.body.classList.contains('theme-matrix');
-  localStorage.setItem('errordon_matrix_theme', isMatrix ? 'matrix' : 'default');
+  localStorage.setItem('MATRIX_matrix_theme', isMatrix ? 'matrix' : 'default');
   
   if (isMatrix && !window.matrixRain) {
     window.matrixRain = new MatrixRain();
@@ -590,10 +590,10 @@ function toggleMatrixTheme() {
     document.body.classList.remove('matrix-static-background');
   }
   
-  console.log(`[Errordon] Matrix theme ${isMatrix ? 'enabled' : 'disabled'}`);
+  console.log(`[MATRIX] Matrix theme ${isMatrix ? 'enabled' : 'disabled'}`);
   
   // Dispatch event for other components
-  window.dispatchEvent(new CustomEvent('errordon:theme-change', { 
+  window.dispatchEvent(new CustomEvent('MATRIX:theme-change', { 
     detail: { theme: isMatrix ? 'matrix' : 'default' } 
   }));
 }
@@ -611,10 +611,10 @@ function cycleIntensity() {
 // INITIALIZATION
 // =============================================================================
 
-function initErrordonMatrix() {
-  // Matrix theme is ENABLED BY DEFAULT for Errordon
+function initMATRIXMatrix() {
+  // Matrix theme is ENABLED BY DEFAULT for MATRIX
   // User can disable with Ctrl+Shift+M (saves preference to localStorage)
-  const stored = localStorage.getItem('errordon_matrix_theme');
+  const stored = localStorage.getItem('MATRIX_matrix_theme');
   
   // Only disable if user EXPLICITLY chose 'default' or 'false'
   // null/undefined/anything else = Matrix enabled (default behavior)
@@ -644,7 +644,7 @@ function initErrordonMatrix() {
   // Enable keyboard shortcuts
   initMatrixKeyboardShortcut();
   
-  console.log('[Errordon] Matrix module loaded');
+  console.log('[MATRIX] Matrix module loaded');
 }
 
 // =============================================================================
@@ -654,7 +654,7 @@ function initErrordonMatrix() {
 // Expose for external use
 window.MatrixRain = MatrixRain;
 window.MatrixSplash = MatrixSplash;
-window.initErrordonMatrix = initErrordonMatrix;
+window.initMATRIXMatrix = initMATRIXMatrix;
 window.toggleMatrixTheme = toggleMatrixTheme;
 window.cycleIntensity = cycleIntensity;
 window.cycleColor = cycleColor;
@@ -677,7 +677,7 @@ window.matrixUtils = {
 // =============================================================================
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initErrordonMatrix);
+  document.addEventListener('DOMContentLoaded', initMATRIXMatrix);
 } else {
-  initErrordonMatrix();
+  initMATRIXMatrix();
 }

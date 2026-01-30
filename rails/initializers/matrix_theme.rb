@@ -1,26 +1,26 @@
 # frozen_string_literal: true
 
-# Errordon Theme Configuration
-# Matrix-style cyberpunk theme for Errordon
+# Matrix Theme Configuration
+# Matrix-style cyberpunk theme for Mastodon
 
 Rails.application.config.to_prepare do
   # Default theme setting
   # Options: 'default', 'matrix', 'light'
-  Errordon::THEME = ENV.fetch('ERRORDON_THEME', 'matrix').freeze
+  Matrix::THEME = ENV.fetch('MATRIX_THEME', 'matrix').freeze
 
   # Matrix color variant (admin-configurable during install)
   # Options: 'green', 'red', 'blue', 'purple'
-  Errordon::MATRIX_COLOR = ENV.fetch('MATRIX_COLOR', 'green').freeze
+  Matrix::MATRIX_COLOR = ENV.fetch('MATRIX_COLOR', 'green').freeze
 
   # Validate color
   valid_colors = %w[green red blue purple]
-  unless valid_colors.include?(Errordon::MATRIX_COLOR)
-    Rails.logger.warn "[Errordon] Invalid MATRIX_COLOR '#{Errordon::MATRIX_COLOR}', defaulting to 'green'"
-    Errordon::MATRIX_COLOR = 'green'.freeze
+  unless valid_colors.include?(Matrix::MATRIX_COLOR)
+    Rails.logger.warn "[Matrix] Invalid MATRIX_COLOR '#{Matrix::MATRIX_COLOR}', defaulting to 'green'"
+    Matrix::MATRIX_COLOR = 'green'.freeze
   end
 
   # Color palette definitions
-  Errordon::MATRIX_COLORS = {
+  Matrix::MATRIX_COLORS = {
     green: {
       name: 'Green',
       description: 'Classic Matrix green',
@@ -52,12 +52,12 @@ Rails.application.config.to_prepare do
   }.freeze
 
   # Theme configuration
-  Errordon::THEME_CONFIG = {
+  Matrix::THEME_CONFIG = {
     matrix: {
       name: 'Matrix',
       description: 'Cyberpunk hacker style with customizable color',
       body_class: 'theme-matrix',
-      colors: Errordon::MATRIX_COLORS[Errordon::MATRIX_COLOR.to_sym] || Errordon::MATRIX_COLORS[:green]
+      colors: Matrix::MATRIX_COLORS[Matrix::MATRIX_COLOR.to_sym] || Matrix::MATRIX_COLORS[:green]
     },
     default: {
       name: 'Default',
@@ -81,5 +81,5 @@ Rails.application.config.to_prepare do
     }
   }.freeze
 
-  Rails.logger.info "[Errordon] Theme: #{Errordon::THEME}, Color: #{Errordon::MATRIX_COLOR}"
+  Rails.logger.info "[Matrix] Theme: #{Matrix::THEME}, Color: #{Matrix::MATRIX_COLOR}"
 end

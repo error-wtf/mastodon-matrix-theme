@@ -66,10 +66,10 @@ function login() {
     
     loginScreen.style.display = 'none';
     terminal.style.display = 'flex';
-    promptEl.textContent = username + '@errordon:~$';
+    promptEl.textContent = username + '@MATRIX:~$';
     commandInput.focus();
     
-    printLine('WELCOME TO ERRORDON - A SAFE FEDIVERSE');
+    printLine('WELCOME TO MATRIX - A SAFE FEDIVERSE');
     printLine('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     printLine('🛡️ NO PORN • NO HATE • NO FASCISM');
     printLine('');
@@ -138,7 +138,7 @@ commandInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
         const cmd = commandInput.value.trim();
         if (cmd) {
-            printLine(username + '@errordon:~$ ' + cmd, 'command-line');
+            printLine(username + '@MATRIX:~$ ' + cmd, 'command-line');
             
             // Talk mode active
             if (talkMode) {
@@ -178,7 +178,7 @@ function handleCommand(input) {
         // Set session flag to bypass matrix redirect
         fetch('/matrix/pass', { method: 'POST', credentials: 'same-origin' }).catch(() => {});
         setTimeout(() => {
-            printLine('[CONNECTING TO ERRORDON NETWORK...]');
+            printLine('[CONNECTING TO MATRIX NETWORK...]');
             setTimeout(() => {
                 printLine('[ACCESS GRANTED - ENTERING THE MATRIX...]');
                 setTimeout(() => { window.location.href = '/auth/sign_in'; }, 800);
@@ -190,11 +190,11 @@ function handleCommand(input) {
     // HELP
     if (cmd === 'help') {
         printLine('');
-        printLine('ERRORDON TERMINAL COMMANDS');
+        printLine('MATRIX TERMINAL COMMANDS');
         printLine('━━━━━━━━━━━━━━━━━━━━━━━━━━');
         printLine('');
-        printLine('enter matrix  → Access Errordon Network');
-        printLine('about         → About Errordon');
+        printLine('enter matrix  → Access MATRIX Network');
+        printLine('about         → About MATRIX');
         printLine('');
         printLine('tetris        → Play Tetris');
         printLine('talk <name>   → Chat (neo/trinity/morpheus/smith/oracle)');
@@ -213,7 +213,7 @@ function handleCommand(input) {
     // ABOUT
     if (cmd === 'about') {
         printLine('');
-        printLine('ERRORDON - A Safe Fediverse Instance');
+        printLine('MATRIX - A Safe Fediverse Instance');
         printLine('=====================================');
         printLine('🛡️  AI-Powered Content Moderation (NSFW-Protect)');
         printLine('🚫  Zero Tolerance: No Porn, No Hate, No Fascism');

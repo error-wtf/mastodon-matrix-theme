@@ -5,27 +5,27 @@
 
 -# 1. Add this in the <head> section (after existing meta tags):
 
-    -# Errordon: Matrix color configuration (for JavaScript)
-    - matrix_color = defined?(Errordon::MATRIX_COLOR) ? Errordon::MATRIX_COLOR : 'green'
-    %meta{ name: 'errordon-matrix-color', content: matrix_color }/
+    -# MATRIX: Matrix color configuration (for JavaScript)
+    - matrix_color = defined?(MATRIX::MATRIX_COLOR) ? MATRIX::MATRIX_COLOR : 'green'
+    %meta{ name: 'MATRIX-matrix-color', content: matrix_color }/
 
 -# 2. Modify the <body> tag:
 
-  -# Errordon: Add theme-matrix class and color class if enabled
-  - matrix_enabled = ENV['ERRORDON_MATRIX_THEME_ENABLED'] == 'true' || (defined?(Errordon::THEME) && Errordon::THEME == 'matrix')
-  - matrix_color = defined?(Errordon::MATRIX_COLOR) ? Errordon::MATRIX_COLOR : 'green'
+  -# MATRIX: Add theme-matrix class and color class if enabled
+  - matrix_enabled = ENV['MATRIX_MATRIX_THEME_ENABLED'] == 'true' || (defined?(MATRIX::THEME) && MATRIX::THEME == 'matrix')
+  - matrix_color = defined?(MATRIX::MATRIX_COLOR) ? MATRIX::MATRIX_COLOR : 'green'
   - body_class_list = body_classes
   - body_class_list = "#{body_class_list} theme-matrix matrix-color-#{matrix_color}" if matrix_enabled
   %body{ class: body_class_list, 'data-matrix-color': matrix_color }
 
 -# 3. Add this right after opening <body> tag:
 
-    -# Errordon Matrix Theme - Rain Background Canvas (always present, JS controls visibility)
+    -# MATRIX Matrix Theme - Rain Background Canvas (always present, JS controls visibility)
     %canvas#matrixRainCanvas{ style: 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none;' }
     
-    -# Errordon Matrix Theme - Initialization (Web Worker based for smooth scrolling)
+    -# MATRIX Matrix Theme - Initialization (Web Worker based for smooth scrolling)
     :javascript
-      // Errordon Matrix Rain - Web Worker version (doesn't freeze on scroll)
+      // MATRIX Matrix Rain - Web Worker version (doesn't freeze on scroll)
       (function() {
         document.body.classList.add('theme-matrix');
         

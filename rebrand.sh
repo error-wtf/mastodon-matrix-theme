@@ -1,13 +1,13 @@
 #!/bin/bash
 # ============================================================
 # Mastodon Matrix Theme - Rebrand Script
-# Changes "Errordon" branding to your custom name
+# Changes "Matrix" branding to your custom instance name
 # ============================================================
 #
 # Usage: ./rebrand.sh "YourInstanceName"
 #
 # Example: ./rebrand.sh "CyberNode"
-#          ./rebrand.sh "MatrixHub"
+#          ./rebrand.sh "Errordon"
 #
 # ============================================================
 
@@ -32,7 +32,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 echo "🎨 Mastodon Matrix Theme - Rebrand Script"
 echo "=========================================="
 echo ""
-echo "Rebranding from 'Errordon' to '$NEW_NAME'"
+echo "Rebranding from 'Matrix' to '$NEW_NAME'"
 echo ""
 
 # Function to replace in file
@@ -42,10 +42,35 @@ replace_in_file() {
         # Create backup
         cp "$file" "$file.bak"
         
-        # Replace variations
-        sed -i "s/ERRORDON/$NEW_NAME_UPPER/g" "$file"
-        sed -i "s/Errordon/$NEW_NAME/g" "$file"
-        sed -i "s/errordon/$NEW_NAME_LOWER/g" "$file"
+        # Replace variations (but not CSS class names like .matrix-*)
+        # Replace display text only
+        sed -i "s/MATRIX TERMINAL/${NEW_NAME_UPPER} TERMINAL/g" "$file"
+        sed -i "s/MATRIX - /${NEW_NAME_UPPER} - /g" "$file"
+        sed -i "s/>MATRIX</>$NEW_NAME_UPPER</g" "$file"
+        sed -i "s/WELCOME TO MATRIX/WELCOME TO $NEW_NAME_UPPER/g" "$file"
+        sed -i "s/@matrix:/@$NEW_NAME_LOWER:/g" "$file"
+        sed -i "s/guest@matrix/guest@$NEW_NAME_LOWER/g" "$file"
+        sed -i "s/root@matrix/root@$NEW_NAME_LOWER/g" "$file"
+        
+        # Replace namespace/module names
+        sed -i "s/Matrix::/${NEW_NAME}::/g" "$file"
+        sed -i "s/MATRIX_THEME/${NEW_NAME_UPPER}_THEME/g" "$file"
+        sed -i "s/MATRIX_MATRIX_THEME_ENABLED/${NEW_NAME_UPPER}_MATRIX_THEME_ENABLED/g" "$file"
+        
+        # Replace localStorage keys  
+        sed -i "s/matrix_matrix_theme/${NEW_NAME_LOWER}_matrix_theme/g" "$file"
+        sed -i "s/matrix_matrix_color/${NEW_NAME_LOWER}_matrix_color/g" "$file"
+        sed -i "s/matrix_matrix_intensity/${NEW_NAME_LOWER}_matrix_intensity/g" "$file"
+        
+        # Replace meta tag names
+        sed -i "s/matrix-matrix-color/${NEW_NAME_LOWER}-matrix-color/g" "$file"
+        
+        # Replace console log prefix
+        sed -i "s/\[Matrix\]/[${NEW_NAME}]/g" "$file"
+        
+        # Replace event names
+        sed -i "s/matrix:theme-change/${NEW_NAME_LOWER}:theme-change/g" "$file"
+        sed -i "s/matrix:color-change/${NEW_NAME_LOWER}:color-change/g" "$file"
         
         echo "  ✓ $file"
     fi
@@ -67,7 +92,7 @@ replace_in_file "$SCRIPT_DIR/terminal/index.html"
 replace_in_file "$SCRIPT_DIR/terminal/main.js"
 
 # Rails
-replace_in_file "$SCRIPT_DIR/rails/initializers/errordon_theme.rb"
+replace_in_file "$SCRIPT_DIR/rails/initializers/matrix_theme.rb"
 replace_in_file "$SCRIPT_DIR/rails/views/application_layout_snippet.haml"
 replace_in_file "$SCRIPT_DIR/rails/entrypoints/common.ts"
 replace_in_file "$SCRIPT_DIR/rails/styles/common.scss.snippet"
@@ -81,18 +106,14 @@ replace_in_file "$SCRIPT_DIR/deploy/mastodon-matrix.service"
 # Install script
 replace_in_file "$SCRIPT_DIR/install.sh"
 
-# Documentation
-replace_in_file "$SCRIPT_DIR/README.md"
-replace_in_file "$SCRIPT_DIR/docs/FRONTEND_MAP_MATRIX_AND_STYLES.md"
-
 echo ""
 echo "📁 Renaming files..."
 
 # Rename initializer
-if [ -f "$SCRIPT_DIR/rails/initializers/errordon_theme.rb" ]; then
-    mv "$SCRIPT_DIR/rails/initializers/errordon_theme.rb" \
+if [ -f "$SCRIPT_DIR/rails/initializers/matrix_theme.rb" ]; then
+    mv "$SCRIPT_DIR/rails/initializers/matrix_theme.rb" \
        "$SCRIPT_DIR/rails/initializers/${NEW_NAME_LOWER}_theme.rb"
-    echo "  ✓ errordon_theme.rb → ${NEW_NAME_LOWER}_theme.rb"
+    echo "  ✓ matrix_theme.rb → ${NEW_NAME_LOWER}_theme.rb"
 fi
 
 echo ""
