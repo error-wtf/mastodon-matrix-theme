@@ -84,6 +84,7 @@ replace_in_file "$SCRIPT_DIR/js/matrix_theme.ts"
 replace_in_file "$SCRIPT_DIR/js/matrix_background.js"
 
 # SCSS
+replace_in_file "$SCRIPT_DIR/styles/errordon_matrix.scss"
 replace_in_file "$SCRIPT_DIR/styles/matrix_theme.scss"
 replace_in_file "$SCRIPT_DIR/styles/matrix_theme_standalone.scss"
 
