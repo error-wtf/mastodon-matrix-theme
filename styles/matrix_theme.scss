@@ -1,0 +1,3302 @@
+// ============================================================================
+// ERRORDON MATRIX THEME
+// Fediverse-compatible visual overlay
+// Does NOT break standard Mastodon functionality
+// Opt-in via Ctrl+Shift+M or user settings
+// Supports color variants: green, red, blue, purple
+// ============================================================================
+
+// =============================================================================
+// COLOR PALETTE DEFINITIONS
+// =============================================================================
+
+// Green (Classic Matrix)
+$matrix-green: #00ff00;
+$matrix-green-dark: #00cc00;
+$matrix-green-glow: rgba(0, 255, 0, 0.5);
+$matrix-green-subtle: rgba(0, 255, 0, 0.1);
+
+// Red (Error/Aggressive)
+$matrix-red: #ff0000;
+$matrix-red-dark: #cc0000;
+$matrix-red-glow: rgba(255, 0, 0, 0.5);
+$matrix-red-subtle: rgba(255, 0, 0, 0.1);
+
+// Blue (Tech/Cyber)
+$matrix-blue: #00bfff;
+$matrix-blue-dark: #0099cc;
+$matrix-blue-glow: rgba(0, 191, 255, 0.5);
+$matrix-blue-subtle: rgba(0, 191, 255, 0.1);
+
+// Purple (Cyberpunk)
+$matrix-purple: #bf00ff;
+$matrix-purple-dark: #9900cc;
+$matrix-purple-glow: rgba(191, 0, 255, 0.5);
+$matrix-purple-subtle: rgba(191, 0, 255, 0.1);
+
+// Base colors (shared)
+$matrix-black: #000000;
+$matrix-dark: #0a0a0a;
+$matrix-text: #ffffff;
+$matrix-error: #ff3333;
+
+// =============================================================================
+// CSS CUSTOM PROPERTIES (Dynamic Color Switching)
+// =============================================================================
+
+:root {
+  // Default: Green Matrix
+  --matrix-primary: #{$matrix-green};
+  --matrix-primary-dark: #{$matrix-green-dark};
+  --matrix-primary-glow: #{$matrix-green-glow};
+  --matrix-primary-subtle: #{$matrix-green-subtle};
+  --matrix-primary-rgb: 0, 255, 0;
+}
+
+// Green variant (explicit)
+body.matrix-color-green,
+[data-matrix-color="green"] {
+  --matrix-primary: #{$matrix-green};
+  --matrix-primary-dark: #{$matrix-green-dark};
+  --matrix-primary-glow: #{$matrix-green-glow};
+  --matrix-primary-subtle: #{$matrix-green-subtle};
+  --matrix-primary-rgb: 0, 255, 0;
+}
+
+// Red variant
+body.matrix-color-red,
+[data-matrix-color="red"] {
+  --matrix-primary: #{$matrix-red};
+  --matrix-primary-dark: #{$matrix-red-dark};
+  --matrix-primary-glow: #{$matrix-red-glow};
+  --matrix-primary-subtle: #{$matrix-red-subtle};
+  --matrix-primary-rgb: 255, 0, 0;
+}
+
+// Blue variant
+body.matrix-color-blue,
+[data-matrix-color="blue"] {
+  --matrix-primary: #{$matrix-blue};
+  --matrix-primary-dark: #{$matrix-blue-dark};
+  --matrix-primary-glow: #{$matrix-blue-glow};
+  --matrix-primary-subtle: #{$matrix-blue-subtle};
+  --matrix-primary-rgb: 0, 191, 255;
+}
+
+// Purple variant
+body.matrix-color-purple,
+[data-matrix-color="purple"] {
+  --matrix-primary: #{$matrix-purple};
+  --matrix-primary-dark: #{$matrix-purple-dark};
+  --matrix-primary-glow: #{$matrix-purple-glow};
+  --matrix-primary-subtle: #{$matrix-purple-subtle};
+  --matrix-primary-rgb: 191, 0, 255;
+}
+
+// Hacker Fonts (UTF-8 compatible, fallback to system fonts)
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Fira+Code&display=swap');
+$font-hacker: 'VT323', 'Courier New', monospace;
+$font-code: 'Fira Code', 'Courier New', monospace;
+$font-fallback: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+// Glitch Animation (uses CSS custom property for color)
+@keyframes glitch {
+  0%, 100% { text-shadow: 2px 0 $matrix-error, -2px 0 cyan; }
+  25% { text-shadow: -2px 0 $matrix-error, 2px 0 cyan; }
+  50% { text-shadow: 2px 2px $matrix-error, -2px -2px cyan; }
+  75% { text-shadow: -2px 2px $matrix-error, 2px -2px cyan; }
+}
+
+@keyframes matrix-glow {
+  0%, 100% { text-shadow: 0 0 10px var(--matrix-primary), 0 0 20px var(--matrix-primary-glow); }
+  50% { text-shadow: 0 0 20px var(--matrix-primary), 0 0 40px var(--matrix-primary-glow); }
+}
+
+@keyframes scanline {
+  0% { top: -100%; }
+  100% { top: 100%; }
+}
+
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+  20%, 24%, 55% { opacity: 0.85; }
+}
+
+// Glitch Class
+.glitch {
+  animation: glitch 0.3s infinite;
+  &:hover { animation-duration: 0.1s; }
+}
+
+.glitch-subtle { animation: flicker 4s infinite; }
+
+// ============================================================================
+// BODY & BASE
+// Fediverse-compatible: Only visual changes, no structural modifications
+// ============================================================================
+
+body.theme-matrix {
+  background: $matrix-black;
+  color: $matrix-text;
+  
+  // Subtle scanline effect (purely decorative, doesn't block interaction)
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(transparent, var(--matrix-primary-subtle));
+    animation: scanline 6s linear infinite;
+    pointer-events: none;
+    z-index: 9998; // Below modals and dropdowns
+    opacity: 0.5;
+  }
+}
+
+// ============================================================================
+// NAVIGATION & COLUMNS
+// ============================================================================
+
+// Fediverse-compatible: Specific selectors, minimal !important
+body.theme-matrix {
+  .ui, .columns-area, .columns-area__panels {
+    background: $matrix-black;
+  }
+
+  .column, .drawer {
+    background: $matrix-dark;
+  }
+
+  .drawer__inner, .drawer__header, .navigation-panel {
+    background: $matrix-dark;
+    border-right-color: rgba(var(--matrix-primary-rgb), 0.2);
+  }
+
+  .column-header {
+    background: $matrix-dark;
+    border-bottom: 2px solid var(--matrix-primary);
+    
+    &__title {
+      font-family: $font-hacker;
+      font-size: 1.4em;
+      color: var(--matrix-primary);
+      text-shadow: 0 0 10px var(--matrix-primary-glow);
+      letter-spacing: 2px;
+      animation: matrix-glow 3s ease-in-out infinite;
+    }
+    
+    &__button {
+      color: var(--matrix-primary-dark);
+      &:hover { color: var(--matrix-primary); }
+    }
+  }
+
+  .column-back-button {
+    background: $matrix-dark;
+    color: var(--matrix-primary);
+  }
+}
+
+// ============================================================================
+// COMPOSE FORM
+// ============================================================================
+
+body.theme-matrix {
+  .compose-form {
+    .autosuggest-textarea__textarea,
+    .compose-form__autosuggest-wrapper {
+      background: $matrix-black;
+      border: 1px solid rgba(var(--matrix-primary-rgb), 0.3);
+      color: $matrix-text;
+      
+      &::placeholder { color: var(--matrix-primary-dark); }
+      &:focus {
+        border-color: var(--matrix-primary);
+        box-shadow: 0 0 15px var(--matrix-primary-glow);
+      }
+    }
+
+    .compose-form__buttons-wrapper {
+      background: $matrix-dark;
+    }
+
+    .compose-form__publish .button {
+      background: var(--matrix-primary);
+      color: $matrix-black;
+      font-family: $font-hacker;
+      
+      &:hover {
+        background: var(--matrix-primary-dark);
+        box-shadow: 0 0 20px var(--matrix-primary-glow);
+      }
+    }
+  }
+}
+
+// ============================================================================
+// STATUSES / POSTS
+// ============================================================================
+
+body.theme-matrix {
+  // Posts remain readable - white text on dark
+  .status, .detailed-status {
+    background: $matrix-dark;
+    border-bottom: 1px solid rgba(var(--matrix-primary-rgb), 0.15);
+    
+    &:hover { background: rgba(var(--matrix-primary-rgb), 0.03); }
+  }
+
+  // Content stays white for readability (Fediverse compatible)
+  .status__content, .detailed-status__content {
+    color: $matrix-text;
+    
+    a {
+      color: $matrix-green;
+      &:hover { text-shadow: 0 0 8px $matrix-green-glow; }
+    }
+  }
+
+  // Usernames in Matrix green
+  .display-name {
+    &__html {
+      font-family: $font-hacker;
+      color: $matrix-green;
+    }
+    &__account {
+      color: var(--matrix-primary-dark);
+    }
+  }
+
+  .status__relative-time, time {
+    color: var(--matrix-primary-dark);
+  }
+
+  .status__action-bar, .detailed-status__action-bar {
+    .icon-button {
+      color: var(--matrix-primary-dark);
+      &:hover, &.active { color: $matrix-green; }
+    }
+  }
+}
+
+// ============================================================================
+// MEDIA (Video, Audio, Images)
+// ============================================================================
+
+body.theme-matrix {
+  .media-gallery {
+    border: 1px solid rgba(var(--matrix-primary-rgb), 0.3);
+    &:hover { box-shadow: 0 0 15px $matrix-green-glow; }
+  }
+
+  // Keep media visible and functional
+  .media-gallery__item-thumbnail {
+    filter: saturate(0.8) brightness(0.9);
+    &:hover { filter: saturate(1) brightness(1); }
+  }
+
+  .video-player {
+    border: 2px solid $matrix-green;
+    box-shadow: 0 0 10px $matrix-green-glow;
+    
+    .video-player__controls { background: rgba(0, 0, 0, 0.85); }
+    .video-player__seek::before,
+    .video-player__volume::before { background: $matrix-green; }
+  }
+
+  .audio-player {
+    background: $matrix-dark;
+    border: 2px solid $matrix-green;
+    
+    .audio-player__progress { background: $matrix-green; }
+  }
+}
+
+// ============================================================================
+// ACCOUNTS & PROFILES
+// ============================================================================
+
+body.theme-matrix {
+  .account, .account-card {
+    background: $matrix-dark;
+    border: 1px solid rgba(var(--matrix-primary-rgb), 0.2);
+    &:hover { border-color: $matrix-green; }
+  }
+
+  .account__header {
+    background: linear-gradient($matrix-dark, $matrix-black);
+    
+    &__image {
+      // Subtle effect, keeps images visible
+      filter: grayscale(20%) contrast(1.05);
+    }
+    
+    &__bar { background: $matrix-dark; }
+    
+    &__tabs__name h1 {
+      font-family: $font-hacker;
+      color: $matrix-green;
+      text-shadow: 0 0 15px $matrix-green-glow;
+      
+      small {
+        color: var(--matrix-primary-dark);
+      }
+    }
+    
+    &__bio { color: $matrix-text; }
+    
+    &__fields {
+      border-color: rgba(var(--matrix-primary-rgb), 0.2);
+      dt { color: $matrix-green; }
+      dd { color: $matrix-text; }
+    }
+  }
+}
+
+// ============================================================================
+// NOTIFICATIONS
+// ============================================================================
+
+body.theme-matrix {
+  .notification {
+    border-bottom: 1px solid rgba(var(--matrix-primary-rgb), 0.15);
+    
+    &__message {
+      color: $matrix-green;
+    }
+  }
+}
+
+// ============================================================================
+// MODALS
+// ============================================================================
+
+body.theme-matrix {
+  .modal-root__overlay { background: rgba(0, 0, 0, 0.92); }
+
+  .modal-root__container {
+    .compose-modal,
+    .confirmation-modal,
+    .report-modal,
+    .mute-modal,
+    .block-modal,
+    .boost-modal {
+      background: $matrix-dark;
+      border: 2px solid $matrix-green;
+      box-shadow: 0 0 40px $matrix-green-glow;
+    }
+
+    .confirmation-modal__action-bar,
+    .mute-modal__action-bar,
+    .boost-modal__action-bar {
+      background: $matrix-black;
+    }
+  }
+}
+
+// ============================================================================
+// BUTTONS
+// ============================================================================
+
+body.theme-matrix {
+  .button {
+    background: $matrix-green;
+    color: $matrix-black;
+    font-family: $font-hacker;
+    font-weight: bold;
+    letter-spacing: 1px;
+    
+    &:hover {
+      background: var(--matrix-primary-dark);
+      box-shadow: 0 0 15px $matrix-green-glow;
+    }
+    
+    &--destructive {
+      background: $matrix-error;
+      &:hover { box-shadow: 0 0 15px rgba(255, 0, 0, 0.5); }
+    }
+  }
+
+  .icon-button {
+    color: var(--matrix-primary-dark);
+    &:hover, &.active { color: $matrix-green; }
+  }
+}
+
+// ============================================================================
+// SCROLLBARS
+// ============================================================================
+
+body.theme-matrix {
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: $matrix-black; }
+  ::-webkit-scrollbar-thumb {
+    background: var(--matrix-primary-dark);
+    border-radius: 4px;
+    &:hover { background: $matrix-green; }
+  }
+}
+
+// ============================================================================
+// SEARCH & INPUTS
+// ============================================================================
+
+body.theme-matrix {
+  .search__input,
+  .setting-text,
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  textarea {
+    background: $matrix-black;
+    border: 1px solid rgba(var(--matrix-primary-rgb), 0.3);
+    color: $matrix-text;
+    
+    &::placeholder { color: var(--matrix-primary-dark); }
+    &:focus {
+      border-color: $matrix-green;
+      box-shadow: 0 0 10px $matrix-green-glow;
+    }
+  }
+}
+
+// ============================================================================
+// GLITCH HEADINGS (hover effect)
+// ============================================================================
+
+body.theme-matrix {
+  // Glitch effect on hover (purely visual)
+  .column-header__title:hover,
+  .account__header__tabs__name h1:hover {
+    animation: glitch 0.2s ease;
+  }
+}
+
+// ============================================================================
+// TABS & NAVIGATION ITEMS
+// ============================================================================
+
+body.theme-matrix {
+  .tabs-bar__link,
+  .column-link {
+    color: var(--matrix-primary-dark);
+    
+    &:hover, &.active {
+      color: $matrix-green;
+      background: rgba(var(--matrix-primary-rgb), 0.1);
+    }
+    
+    &.active {
+      border-bottom-color: $matrix-green;
+    }
+  }
+}
+
+// ============================================================================
+// LOADING & EMPTY STATES
+// ============================================================================
+
+body.theme-matrix {
+  .loading-indicator {
+    .loading-indicator__figure {
+      border-color: $matrix-green transparent;
+    }
+  }
+
+  .empty-column-indicator,
+  .error-column {
+    color: var(--matrix-primary-dark);
+  }
+}
+
+// ============================================================================
+// ACCESSIBILITY UTILITIES
+// ============================================================================
+
+// Screen reader only content
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+// ============================================================================
+// MATRIX RAIN BACKGROUND CANVAS
+// ============================================================================
+
+// Matrix Rain Canvas - fixed background behind everything
+.matrix-rain-canvas {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+}
+
+// Static fallback for prefers-reduced-motion
+body.matrix-static-background {
+  background: linear-gradient(
+    180deg,
+    $matrix-black 0%,
+    darken($matrix-dark, 2%) 50%,
+    $matrix-black 100%
+  ) !important;
+  
+  // Subtle static pattern instead of animation
+  &::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      radial-gradient(rgba(var(--matrix-primary-rgb), 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+    z-index: -1;
+  }
+}
+
+// When Matrix theme active, make body transparent for rain to show
+body.theme-matrix {
+  background: transparent !important;
+  
+  // Main UI containers transparent
+  .ui {
+    background: transparent !important;
+  }
+  
+  .columns-area {
+    background: transparent !important;
+  }
+  
+  .columns-area__panels {
+    background: transparent !important;
+  }
+  
+  // ==========================================================================
+  // PANEL OPACITY (Increased for better readability)
+  // Previous: 0.85-0.88, Now: 0.92-0.95
+  // ==========================================================================
+  
+  // Columns - primary content containers
+  .column,
+  .drawer {
+    background: rgba(0, 0, 0, 0.93) !important;
+    backdrop-filter: blur(2px);
+  }
+  
+  .drawer__inner {
+    background: rgba(0, 0, 0, 0.93) !important;
+  }
+  
+  // Posts - high opacity for maximum readability
+  .status,
+  .detailed-status {
+    background: rgba(0, 0, 0, 0.92) !important;
+  }
+  
+  // Navigation panel - most opaque for clarity
+  .navigation-panel {
+    background: rgba(0, 0, 0, 0.95) !important;
+  }
+  
+  // Compose form area
+  .compose-form__autosuggest-wrapper,
+  .compose-form {
+    background: rgba(0, 0, 0, 0.95) !important;
+  }
+  
+  // Modals - fully opaque (no rain distraction)
+  .modal-root__modal,
+  .modal-root__container,
+  .actions-modal,
+  .boost-modal,
+  .confirmation-modal,
+  .report-modal {
+    background: rgba(5, 5, 5, 0.98) !important;
+  }
+  
+  // Dropdowns - fully opaque
+  .dropdown-menu,
+  .privacy-dropdown__dropdown,
+  .language-dropdown__dropdown {
+    background: rgba(5, 5, 5, 0.98) !important;
+  }
+}
+
+// =============================================================================
+// REDUCED MOTION SUPPORT
+// =============================================================================
+
+@media (prefers-reduced-motion: reduce) {
+  body.theme-matrix {
+    // Disable scanline animation
+    &::before {
+      animation: none !important;
+      opacity: 0.3;
+    }
+    
+    // Hide rain canvas (JS handles this, but CSS backup)
+    .matrix-rain-canvas {
+      display: none !important;
+    }
+    
+    // Disable all Matrix animations
+    .glitch,
+    .glitch-subtle {
+      animation: none !important;
+    }
+    
+    .column-header__title {
+      animation: none !important;
+    }
+    
+    // Use solid backgrounds instead of transparent
+    background: $matrix-black !important;
+    
+    .column,
+    .drawer,
+    .drawer__inner {
+      background: $matrix-dark !important;
+      backdrop-filter: none !important;
+    }
+  }
+  
+  // Disable splash animations
+  .matrix-splash-overlay {
+    &.matrix-fade-out,
+    &.matrix-glitch {
+      animation: none !important;
+    }
+  }
+  
+  .matrix-splash-title,
+  .matrix-glitch-text {
+    animation: none !important;
+    text-shadow: 0 0 10px $matrix-green-glow !important;
+  }
+}
+
+// ============================================================================
+// MATRIX SPLASH SCREEN (Enter Matrix)
+// ============================================================================
+
+.matrix-splash-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $matrix-black;
+
+  &.matrix-fade-out {
+    animation: matrixFadeOut 1s ease-out forwards;
+  }
+
+  &.matrix-glitch {
+    animation: matrixGlitchScreen 0.3s ease-in-out;
+  }
+}
+
+.splash-matrix-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.matrix-splash-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 60px;
+  background: rgba(0, 0, 0, 0.95);
+  border: 2px solid $matrix-green;
+  border-radius: 10px;
+  box-shadow: 0 0 50px $matrix-green-glow;
+}
+
+.matrix-splash-title {
+  color: $matrix-green;
+  font-family: $font-hacker;
+  font-size: 56px;
+  font-weight: bold;
+  text-shadow: 0 0 30px $matrix-green;
+  letter-spacing: 10px;
+  margin-bottom: 20px;
+  animation: matrix-glow 2s ease-in-out infinite;
+}
+
+.matrix-splash-subtitle {
+  color: var(--matrix-primary-dark);
+  font-family: $font-hacker;
+  font-size: 20px;
+  margin-bottom: 40px;
+  letter-spacing: 3px;
+}
+
+.matrix-splash-terminal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.matrix-prompt {
+  color: $matrix-green;
+  font-family: $font-code;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.matrix-splash-input {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid $matrix-green;
+  color: $matrix-green;
+  font-family: $font-code;
+  font-size: 18px;
+  padding: 12px 15px;
+  width: 350px;
+  outline: none;
+  letter-spacing: 1px;
+
+  &::placeholder {
+    color: rgba(var(--matrix-primary-rgb), 0.4);
+    font-style: italic;
+  }
+
+  &:focus {
+    box-shadow: 0 4px 15px $matrix-green-glow;
+  }
+}
+
+.matrix-splash-hint {
+  color: var(--matrix-primary-dark);
+  font-family: $font-hacker;
+  font-size: 16px;
+  font-style: italic;
+  animation: matrixBlink 2s ease-in-out infinite;
+}
+
+// Splash Animations
+@keyframes matrixFadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+@keyframes matrixGlitchScreen {
+  0%, 100% { transform: translate(0); filter: none; }
+  20% { transform: translate(-5px, 5px); filter: hue-rotate(90deg); }
+  40% { transform: translate(5px, -5px); filter: hue-rotate(180deg); }
+  60% { transform: translate(-3px, 3px); filter: hue-rotate(270deg); }
+  80% { transform: translate(3px, -3px); filter: hue-rotate(360deg); }
+}
+
+@keyframes matrixBlink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0.3; }
+}
+
+.matrix-glitch-text {
+  animation: matrixTextGlitch 0.5s ease-in-out infinite;
+}
+
+@keyframes matrixTextGlitch {
+  0%, 100% { 
+    text-shadow: 0 0 20px $matrix-green;
+    transform: translate(0);
+  }
+  25% { 
+    text-shadow: -3px 0 #ff0000, 3px 0 #00ffff;
+    transform: translate(2px, -1px);
+  }
+  50% { 
+    text-shadow: 3px 0 #ff0000, -3px 0 #00ffff;
+    transform: translate(-2px, 1px);
+  }
+  75% { 
+    text-shadow: 0 0 20px $matrix-green;
+    transform: translate(1px, 2px);
+  }
+}
+
+// Skip button for accessibility
+.matrix-splash-skip {
+  margin-top: 30px;
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid var(--matrix-primary-dark);
+  color: var(--matrix-primary-dark);
+  font-family: $font-code;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover,
+  &:focus {
+    background: rgba(var(--matrix-primary-rgb), 0.1);
+    border-color: $matrix-green;
+    color: $matrix-green;
+    outline: none;
+  }
+  
+  &:focus {
+    box-shadow: 0 0 10px $matrix-green-glow;
+  }
+}
+
+// ============================================================================
+// FOCUS INDICATORS (Accessibility)
+// ============================================================================
+
+body.theme-matrix {
+  // Ensure all interactive elements have visible focus
+  a:focus,
+  button:focus,
+  input:focus,
+  select:focus,
+  textarea:focus,
+  [tabindex]:focus {
+    outline: 2px solid $matrix-green;
+    outline-offset: 2px;
+  }
+  
+  // Skip link (if present)
+  .skip-link:focus {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 100000;
+    padding: 10px 20px;
+    background: $matrix-green;
+    color: $matrix-black;
+    font-weight: bold;
+    text-decoration: none;
+  }
+}
+
+// ============================================================================
+// TEXT READABILITY ENHANCEMENTS
+// ============================================================================
+
+body.theme-matrix {
+  // =============================================================================
+  // BASE TEXT: WHITE for readability
+  // =============================================================================
+  color: $matrix-text !important;
+  
+  // All paragraph and body text: WHITE
+  p, span, div, li, td, th, dd, dt,
+  .status__content,
+  .detailed-status__content,
+  .account__header__bio,
+  .account__header__content,
+  .reply-indicator__content,
+  .compose-form__textarea,
+  .notification__message,
+  .notification__report__comment,
+  .trends__item__sparkline,
+  .trends__item__current,
+  .account__section-headline,
+  .getting-started,
+  .empty-column-indicator,
+  .error-column,
+  .follow-request-info,
+  .card__body,
+  .about__section__body,
+  .about__section__title,
+  .server-banner__description,
+  .rules__text,
+  .prose,
+  .rich-formatting,
+  .rich-formatting p,
+  .rich-formatting li {
+    color: $matrix-text !important;
+  }
+  
+  // Text shadow for better readability
+  .status__content,
+  .detailed-status__content,
+  .account__header__bio {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  }
+  
+  // =============================================================================
+  // HEADINGS: MATRIX GREEN
+  // =============================================================================
+  h1, h2, h3, h4, h5, h6,
+  .display-name__html,
+  .display-name strong,
+  .account__header__tabs__name h1,
+  .account__header__extra__links strong,
+  .column-header__title,
+  .column-header__wrapper h1,
+  .column-settings__section,
+  .setting-toggle__label,
+  .notification-group__main__header__label,
+  .trends__item__name,
+  .account__display-name strong,
+  .detailed-status__display-name strong,
+  .detailed-status__display-name-label,
+  .server-banner__hero h1,
+  .about__header h1,
+  .rules__heading,
+  .rich-formatting h1,
+  .rich-formatting h2,
+  .rich-formatting h3,
+  .rich-formatting h4 {
+    color: var(--matrix-primary) !important;
+  }
+  
+  // =============================================================================
+  // LINKS: MATRIX GREEN
+  // =============================================================================
+  a,
+  .status__content a,
+  .detailed-status__content a,
+  .reply-indicator__content a,
+  .account__header__bio a,
+  .rich-formatting a,
+  .prose a {
+    color: var(--matrix-primary) !important;
+    
+    &:hover,
+    &:focus {
+      color: lighten($matrix-green, 15%) !important;
+      text-decoration: underline;
+    }
+  }
+  
+  // Usernames/mentions: lighter green
+  .display-name__account,
+  .mention,
+  .status__display-name,
+  .detailed-status__display-name .display-name__account {
+    color: var(--matrix-primary-dark) !important;
+  }
+  
+  // Hashtags: Matrix green
+  .hashtag,
+  a.hashtag,
+  .status__content a.hashtag {
+    color: var(--matrix-primary) !important;
+  }
+  
+  // =============================================================================
+  // TIMESTAMPS & METADATA: Dimmed green
+  // =============================================================================
+  .status__relative-time,
+  .detailed-status__datetime,
+  .account__header__extra__links,
+  .status__info .status__relative-time,
+  .notification__relative-time,
+  time {
+    color: var(--matrix-primary-dark) !important;
+    opacity: 0.8;
+  }
+  
+  // =============================================================================
+  // BUTTONS TEXT
+  // =============================================================================
+  .button,
+  button {
+    color: $matrix-black !important;
+    
+    &.button--secondary,
+    &.button--tertiary {
+      color: var(--matrix-primary) !important;
+    }
+  }
+  
+  // =============================================================================
+  // FORM INPUTS
+  // =============================================================================
+  input, textarea, select {
+    color: $matrix-text !important;
+    
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.5) !important;
+    }
+  }
+  
+  // Labels
+  label,
+  .setting-text__label,
+  .simple_form label {
+    color: $matrix-text !important;
+  }
+  
+  // =============================================================================
+  // LOGO STYLING FOR MATRIX THEME
+  // Make logos white/green for visibility on dark background
+  // =============================================================================
+  
+  // Logo text should be white
+  .logo,
+  .logo--wordmark,
+  .logo--icon {
+    color: $matrix-text !important;
+    fill: $matrix-text !important;
+  }
+  
+  // Make SVG logo text white
+  svg.logo use,
+  .logo svg text,
+  .logo svg path[fill="currentColor"] {
+    fill: $matrix-text !important;
+  }
+  
+  // Brand logo on about/landing pages
+  .brand__tagline,
+  .about__header h1 {
+    color: var(--matrix-primary) !important;
+  }
+  
+  // Server hero text
+  .server-banner__hero h1,
+  .server-banner__hero p {
+    color: $matrix-text !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  }
+  
+  // Navigation/UI logos
+  .ui__header .logo,
+  .navigation-panel .logo {
+    color: var(--matrix-primary) !important;
+  }
+  
+  // Mastodon elephant images - add green filter
+  img[src*="elephant"],
+  .elephant-friend img {
+    filter: brightness(1.2) sepia(1) hue-rotate(70deg) saturate(3);
+  }
+
+  // =============================================================================
+  // COMPREHENSIVE DARK THEME OVERRIDES
+  // Fix all light-themed elements for Matrix dark mode
+  // =============================================================================
+
+  // --- CARDS, PANELS, BOXES ---
+  .card,
+  .card__bar,
+  .card__body,
+  .card__img,
+  .account-card,
+  .admin-wrapper .content,
+  .simple_form,
+  .fields-group,
+  .input,
+  .actions,
+  .box-widget,
+  .contact-widget,
+  .landing-page__information,
+  .hero-widget,
+  .endorsements-widget,
+  .trends__item,
+  .notification,
+  .notification__message,
+  .status,
+  .detailed-status,
+  .account__header__bar,
+  .account__header__bio,
+  .account__header__content,
+  .public-layout .public-account-header__bar,
+  .public-layout .public-account-bio,
+  .directory__card,
+  .explore__search-results,
+  .column-settings,
+  .column-inline-form {
+    background: rgba(0, 0, 0, 0.85) !important;
+    color: $matrix-text !important;
+    border-color: var(--matrix-primary-dark) !important;
+  }
+
+  // --- SETTINGS & ADMIN PAGES ---
+  .admin-wrapper,
+  .settings-wrapper,
+  .dashboard,
+  .admin-wrapper .sidebar,
+  .admin-wrapper .content-wrapper,
+  .simple_form .fields-row,
+  .simple_form .input.with_block_label,
+  .simple_form .input.with_label,
+  .table-wrapper,
+  .batch-table,
+  .batch-table__toolbar,
+  .batch-table__row,
+  .report-card,
+  .report-card__summary,
+  .dashboard__counters,
+  .dashboard__widgets,
+  .dimension,
+  .dimension__item,
+  .retention,
+  .trends__item,
+  .account-card,
+  .account-role,
+  .follow-recommendations,
+  .admin-account-bio,
+  .log-entry,
+  .log-entry__header,
+  .log-entry__body,
+  .announcements-list,
+  .announcement,
+  .filters-list,
+  .filter,
+  .two-factor-authentication,
+  .setting-toggle,
+  .settings-panel,
+  .content-wrapper,
+  .form-container,
+  .oauth-prompt,
+  .follow-prompt,
+  .interaction-modal,
+  .confirmation-modal,
+  .confirmation-modal__container {
+    background: rgba(0, 0, 0, 0.9) !important;
+    color: $matrix-text !important;
+  }
+
+  // --- TABLE STYLING ---
+  table,
+  .table,
+  .batch-table table,
+  tbody,
+  thead,
+  tr,
+  td,
+  th {
+    background: transparent !important;
+    color: $matrix-text !important;
+    border-color: var(--matrix-primary-dark) !important;
+  }
+
+  th {
+    color: var(--matrix-primary) !important;
+    font-weight: bold;
+  }
+
+  tr:hover {
+    background: rgba(var(--matrix-primary-rgb), 0.1) !important;
+  }
+
+  // --- FORMS & INPUTS (Comprehensive) ---
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="url"],
+  input[type="number"],
+  input[type="search"],
+  input[type="tel"],
+  textarea,
+  select,
+  .input__input,
+  .search__input,
+  .autosuggest-input,
+  .compose-form__textarea,
+  .simple_form input[type="text"],
+  .simple_form input[type="email"],
+  .simple_form input[type="password"],
+  .simple_form input[type="url"],
+  .simple_form textarea,
+  .simple_form select {
+    background: rgba(0, 0, 0, 0.8) !important;
+    color: $matrix-text !important;
+    border: 1px solid var(--matrix-primary-dark) !important;
+    
+    &:focus {
+      border-color: var(--matrix-primary) !important;
+      box-shadow: 0 0 5px var(--matrix-primary-glow) !important;
+    }
+    
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.4) !important;
+    }
+  }
+
+  // --- CHECKBOX & RADIO ---
+  input[type="checkbox"],
+  input[type="radio"] {
+    accent-color: var(--matrix-primary) !important;
+  }
+
+  // --- DROPDOWN MENUS ---
+  .dropdown-menu,
+  .dropdown-menu__container,
+  .privacy-dropdown__dropdown,
+  .language-dropdown__dropdown,
+  .react-toggle,
+  .pillbar-button,
+  .icon-button,
+  .text-icon-button {
+    background: rgba(0, 0, 0, 0.95) !important;
+    color: $matrix-text !important;
+    border-color: var(--matrix-primary-dark) !important;
+  }
+
+  .dropdown-menu__item a,
+  .dropdown-menu__item button {
+    color: $matrix-text !important;
+    
+    &:hover {
+      background: rgba(var(--matrix-primary-rgb), 0.2) !important;
+      color: var(--matrix-primary) !important;
+    }
+  }
+
+  // --- TABS & NAVIGATION ---
+  .tabs-bar,
+  .tabs-bar__wrapper,
+  .column-header,
+  .column-header__wrapper,
+  .column-header__collapsible,
+  .column-header__collapsible-inner,
+  .account__section-headline,
+  .notification__filter-bar,
+  .filter-bar,
+  .search-header,
+  .explore__search-header {
+    background: rgba(0, 0, 0, 0.9) !important;
+    border-color: var(--matrix-primary-dark) !important;
+  }
+
+  .tabs-bar__link,
+  .column-header__button,
+  .filter-bar__item {
+    color: $matrix-text !important;
+    
+    &:hover,
+    &.active {
+      color: var(--matrix-primary) !important;
+      border-bottom-color: var(--matrix-primary) !important;
+    }
+  }
+
+  // --- MODALS & POPUPS (Comprehensive) ---
+  .modal-root__modal,
+  .modal-root__container,
+  .compose-modal,
+  .confirmation-modal,
+  .confirmation-modal__container,
+  .confirmation-modal__action-bar,
+  .mute-modal,
+  .block-modal,
+  .report-modal,
+  .report-modal__container,
+  .embed-modal,
+  .list-editor,
+  .focal-point-modal,
+  .media-modal,
+  .boost-modal,
+  .favourite-modal,
+  .doodle-modal,
+  .actions-modal,
+  .actions-modal ul,
+  .actions-modal li,
+  .compare-history-modal,
+  .report-dialog-modal,
+  .ignore-notifications-modal,
+  .interaction-modal,
+  .link-modal,
+  .onboarding-modal,
+  .error-modal,
+  .loading-modal,
+  .video-modal,
+  .audio-modal,
+  .image-modal,
+  .alttext-modal,
+  .alt-text-modal,
+  .media-modal__close,
+  .dialog-modal,
+  [role="dialog"],
+  [role="alertdialog"],
+  .ReactModal__Content {
+    background: rgba(10, 10, 10, 0.98) !important;
+    color: $matrix-text !important;
+    border: 1px solid var(--matrix-primary-dark) !important;
+    
+    // Modal headers
+    h1, h2, h3, h4 {
+      color: var(--matrix-primary) !important;
+    }
+    
+    // Modal paragraphs
+    p, span, div {
+      color: $matrix-text !important;
+    }
+    
+    // Modal buttons
+    button {
+      background: rgba(var(--matrix-primary-rgb), 0.1) !important;
+      color: var(--matrix-primary) !important;
+      border: 1px solid var(--matrix-primary-dark) !important;
+      
+      &:hover {
+        background: rgba(var(--matrix-primary-rgb), 0.2) !important;
+        border-color: var(--matrix-primary) !important;
+      }
+      
+      &.button--primary,
+      &[type="submit"] {
+        background: var(--matrix-primary) !important;
+        color: $matrix-black !important;
+      }
+    }
+  }
+
+  .modal-root__overlay {
+    background: rgba(0, 0, 0, 0.85) !important;
+  }
+  
+  // Confirmation modal specific
+  .confirmation-modal,
+  .confirmation-modal__container {
+    background: rgba(10, 10, 10, 0.98) !important;
+    
+    .confirmation-modal__action-bar {
+      background: rgba(0, 0, 0, 0.9) !important;
+      border-top: 1px solid var(--matrix-primary-dark) !important;
+      
+      .confirmation-modal__cancel-button,
+      .confirmation-modal__secondary-button {
+        background: transparent !important;
+        color: var(--matrix-primary) !important;
+        
+        &:hover {
+          background: rgba(var(--matrix-primary-rgb), 0.1) !important;
+        }
+      }
+      
+      .confirmation-modal__action-button {
+        background: var(--matrix-primary) !important;
+        color: $matrix-black !important;
+      }
+    }
+  }
+  
+  // Any popup with white background
+  .dialog,
+  .dialog__content,
+  .alert-dialog,
+  .popup,
+  .popover,
+  .popover-menu,
+  [class*="modal"],
+  [class*="Modal"],
+  [class*="dialog"],
+  [class*="Dialog"],
+  [class*="popup"],
+  [class*="Popup"] {
+    background: rgba(10, 10, 10, 0.98) !important;
+    color: $matrix-text !important;
+    border-color: var(--matrix-primary-dark) !important;
+  }
+
+  // =============================================================================
+  // HOVER CARD (Profile Popup)
+  // =============================================================================
+  .hover-card {
+    background: rgba(0, 0, 0, 0.95) !important;
+    border: 1px solid var(--matrix-primary) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 0 20px rgba(var(--matrix-primary-rgb), 0.3),
+                0 4px 20px rgba(0, 0, 0, 0.8) !important;
+    backdrop-filter: blur(10px) !important;
+
+    &__name {
+      color: $matrix-text !important;
+      
+      .display-name {
+        color: $matrix-text !important;
+        
+        &__account {
+          color: var(--matrix-primary) !important;
+        }
+      }
+    }
+
+    &__numbers {
+      color: $matrix-text !important;
+      
+      strong {
+        color: var(--matrix-primary) !important;
+      }
+      
+      span {
+        color: rgba(255, 255, 255, 0.7) !important;
+      }
+    }
+
+    &__bio {
+      color: rgba(255, 255, 255, 0.85) !important;
+      
+      a {
+        color: var(--matrix-primary) !important;
+      }
+    }
+
+    &__familiar-followers {
+      color: rgba(255, 255, 255, 0.7) !important;
+      
+      a {
+        color: var(--matrix-primary) !important;
+      }
+    }
+
+    // Follow button in hover card
+    .button {
+      background: transparent !important;
+      border: 1px solid var(--matrix-primary) !important;
+      color: var(--matrix-primary) !important;
+      
+      &:hover {
+        background: var(--matrix-primary) !important;
+        color: $matrix-black !important;
+      }
+    }
+  }
+
+  // Hover card controller
+  .hover-card-controller {
+    z-index: 9999 !important;
+  }
+
+  // --- ALERTS & NOTIFICATIONS ---
+  .flash-message,
+  .alert,
+  .notice,
+  .information-badge {
+    background: rgba(var(--matrix-primary-rgb), 0.15) !important;
+    color: $matrix-text !important;
+    border: 1px solid var(--matrix-primary-dark) !important;
+  }
+
+  .flash-message.alert,
+  .flash-message.error {
+    background: rgba(255, 0, 0, 0.15) !important;
+    border-color: $matrix-error !important;
+  }
+
+  .flash-message.success,
+  .flash-message.notice {
+    background: rgba(var(--matrix-primary-rgb), 0.15) !important;
+    border-color: var(--matrix-primary) !important;
+  }
+
+  // --- HINT TEXT ---
+  .hint,
+  .simple_form .hint,
+  .simple_form p.hint,
+  .simple_form span.hint,
+  .recommended,
+  .input-copy__instructions {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  // --- CODE BLOCKS ---
+  code,
+  pre,
+  .input-copy,
+  .input-copy__wrapper {
+    background: rgba(0, 0, 0, 0.9) !important;
+    color: var(--matrix-primary) !important;
+    border: 1px solid var(--matrix-primary-dark) !important;
+    font-family: $font-code !important;
+  }
+
+  // --- PAGINATION ---
+  .pagination,
+  .load-more,
+  .load-gap {
+    color: var(--matrix-primary) !important;
+    
+    a {
+      color: var(--matrix-primary) !important;
+      
+      &:hover {
+        color: $matrix-text !important;
+      }
+    }
+  }
+
+  // --- SCROLLBARS (Global) ---
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--matrix-primary-dark) rgba(0, 0, 0, 0.3);
+  }
+
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: var(--matrix-primary-dark);
+    border-radius: 4px;
+    
+    &:hover {
+      background: var(--matrix-primary);
+    }
+  }
+
+  // --- SIDEBAR & NAVIGATION PANEL ---
+  .navigation-panel,
+  .navigation-bar,
+  .drawer,
+  .drawer__inner,
+  .drawer__header,
+  .getting-started,
+  .getting-started__wrapper,
+  .getting-started__footer {
+    background: rgba(0, 0, 0, 0.85) !important;
+  }
+
+  .navigation-panel__menu a,
+  .navigation-bar__profile,
+  .column-link {
+    color: $matrix-text !important;
+    
+    &:hover,
+    &.active {
+      color: var(--matrix-primary) !important;
+      background: rgba(var(--matrix-primary-rgb), 0.1) !important;
+    }
+  }
+
+  // --- COMPOSE BOX ---
+  .compose-form,
+  .compose-form__autosuggest-wrapper,
+  .compose-form__buttons-wrapper,
+  .compose-form__warning,
+  .reply-indicator,
+  .reply-indicator__content {
+    background: rgba(0, 0, 0, 0.8) !important;
+    color: $matrix-text !important;
+  }
+
+  // --- ACCOUNT HEADERS ---
+  .account__header,
+  .account__header__image,
+  .account__header__bar,
+  .account__header__tabs,
+  .account__header__tabs__buttons,
+  .account__header__bio .account__header__content,
+  .public-account-header,
+  .public-account-header__bar,
+  .public-account-header__tabs,
+  .account-timeline__header {
+    background: rgba(0, 0, 0, 0.85) !important;
+  }
+
+  // --- PROFILE VERIFICATION PAGE (shown in screenshot) ---
+  .public-layout,
+  .public-layout .container,
+  .public-layout .content,
+  .public-layout .box-widget,
+  .public-layout .rich-formatting,
+  .verification-card,
+  .verification-card__item,
+  .website-preview,
+  .preview-card {
+    background: rgba(0, 0, 0, 0.9) !important;
+    color: $matrix-text !important;
+  }
+
+  // --- RICH FORMATTING ---
+  .rich-formatting {
+    background: rgba(0, 0, 0, 0.85) !important;
+    
+    h1, h2, h3, h4, h5, h6 {
+      color: var(--matrix-primary) !important;
+    }
+    
+    p, li, td, th, dd, dt {
+      color: $matrix-text !important;
+    }
+    
+    a {
+      color: var(--matrix-primary) !important;
+    }
+    
+    hr {
+      border-color: var(--matrix-primary-dark) !important;
+    }
+  }
+
+  // --- COPY INPUT BUTTON (Verification page) ---
+  .input-copy {
+    background: rgba(0, 0, 0, 0.9) !important;
+    
+    input {
+      background: transparent !important;
+      color: var(--matrix-primary) !important;
+    }
+    
+    button {
+      background: var(--matrix-primary) !important;
+      color: $matrix-black !important;
+    }
+  }
+
+  // --- ALL WHITE/LIGHT BACKGROUNDS FIX ---
+  .hero-widget__img,
+  .hero-widget__text,
+  .landing__grid,
+  .landing-page,
+  .landing-page__forms,
+  .landing-page__information,
+  .landing-page__short-description,
+  .simple_form .block-button,
+  .status-card,
+  .status-card__title,
+  .status-card__content,
+  .status-card__description,
+  .poll,
+  .poll__option,
+  .poll__footer,
+  .server-banner,
+  .server-banner__introduction,
+  .account__disclaimer,
+  .moved-account-widget,
+  .featured-tags,
+  .trends-widget,
+  .trends-widget__item {
+    background: rgba(0, 0, 0, 0.85) !important;
+    color: $matrix-text !important;
+  }
+
+  // --- FIX SPECIFIC LIGHT CARDS ON SETTINGS PAGES ---
+  .card--hierarchical,
+  .card--hierarchical h3,
+  .card--hierarchical p,
+  .link-card,
+  .author-card,
+  .author-card__link,
+  .author-card__account,
+  .author-card__bio {
+    background: rgba(0, 0, 0, 0.9) !important;
+    color: $matrix-text !important;
+    
+    h3, strong {
+      color: var(--matrix-primary) !important;
+    }
+  }
+
+  // --- EMOJIS PICKER ---
+  .emoji-picker-dropdown__menu,
+  .emoji-mart,
+  .emoji-mart-bar,
+  .emoji-mart-search,
+  .emoji-mart-category-label,
+  .emoji-mart-scroll {
+    background: rgba(10, 10, 10, 0.98) !important;
+    color: $matrix-text !important;
+    border-color: var(--matrix-primary-dark) !important;
+  }
+
+  // =============================================================================
+  // COMPOSE FORM - FULL MATRIX STYLING
+  // =============================================================================
+  
+  // Main compose form container
+  .compose-form {
+    background: rgba(0, 0, 0, 0.85) !important;
+    border: 1px solid var(--matrix-primary-dark) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 0 20px rgba(var(--matrix-primary-rgb), 0.15) !important;
+    
+    // Textarea
+    .compose-form__textarea,
+    .autosuggest-textarea__textarea {
+      background: rgba(0, 0, 0, 0.6) !important;
+      color: $matrix-text !important;
+      border: 1px solid var(--matrix-primary-dark) !important;
+      font-family: $font-code !important;
+      
+      &::placeholder {
+        color: var(--matrix-primary-dark) !important;
+        opacity: 0.7;
+      }
+      
+      &:focus {
+        border-color: var(--matrix-primary) !important;
+        box-shadow: 0 0 10px var(--matrix-primary-glow) !important;
+      }
+    }
+  }
+  
+  // Privacy/Visibility dropdown - Matrix styled buttons
+  .privacy-dropdown,
+  .privacy-dropdown__value,
+  .privacy-dropdown > button,
+  button.privacy-dropdown__value,
+  .compose-form .privacy-dropdown button {
+    background: linear-gradient(180deg, rgba(var(--matrix-primary-rgb), 0.2) 0%, rgba(0, 0, 0, 0.9) 100%) !important;
+    color: var(--matrix-primary) !important;
+    border: 1px solid var(--matrix-primary) !important;
+    border-radius: 4px !important;
+    font-family: $font-code !important;
+    text-shadow: 0 0 5px var(--matrix-primary-glow) !important;
+    
+    &:hover {
+      background: linear-gradient(180deg, rgba(var(--matrix-primary-rgb), 0.3) 0%, rgba(0, 0, 0, 0.95) 100%) !important;
+      box-shadow: 0 0 10px var(--matrix-primary-glow) !important;
+    }
+    
+    span, .privacy-dropdown__value-label {
+      color: var(--matrix-primary) !important;
+    }
+    
+    .icon, svg {
+      color: var(--matrix-primary) !important;
+      fill: var(--matrix-primary) !important;
+    }
+  }
+  
+  // Dropdown menu when open
+  .privacy-dropdown__dropdown,
+  .privacy-dropdown__option {
+    background: rgba(0, 0, 0, 0.98) !important;
+    border: 1px solid var(--matrix-primary-dark) !important;
+    
+    &:hover, &.active {
+      background: rgba(var(--matrix-primary-rgb), 0.2) !important;
+    }
+    
+    .privacy-dropdown__option__content {
+      color: $matrix-text !important;
+      
+      strong {
+        color: var(--matrix-primary) !important;
+      }
+    }
+  }
+  
+  .privacy-dropdown__option {
+    &:hover,
+    &.active {
+      background: rgba(var(--matrix-primary-rgb), 0.2) !important;
+      color: var(--matrix-primary) !important;
+    }
+    
+    .privacy-dropdown__option__content {
+      color: $matrix-text !important;
+      
+      strong {
+        color: var(--matrix-primary) !important;
+      }
+    }
+  }
+  
+  // Language dropdown - Matrix styled
+  .language-dropdown,
+  .language-dropdown > button,
+  .language-dropdown button {
+    background: linear-gradient(180deg, rgba(var(--matrix-primary-rgb), 0.2) 0%, rgba(0, 0, 0, 0.9) 100%) !important;
+    color: var(--matrix-primary) !important;
+    border: 1px solid var(--matrix-primary) !important;
+    border-radius: 4px !important;
+    font-family: $font-code !important;
+    text-shadow: 0 0 5px var(--matrix-primary-glow) !important;
+    
+    &:hover {
+      background: linear-gradient(180deg, rgba(var(--matrix-primary-rgb), 0.3) 0%, rgba(0, 0, 0, 0.95) 100%) !important;
+      box-shadow: 0 0 10px var(--matrix-primary-glow) !important;
+    }
+  }
+  
+  .language-dropdown__dropdown {
+    background: rgba(0, 0, 0, 0.98) !important;
+    border: 1px solid var(--matrix-primary-dark) !important;
+    
+    .language-dropdown__dropdown__results {
+      background: rgba(0, 0, 0, 0.98) !important;
+      
+      .language-dropdown__dropdown__results__item {
+        color: $matrix-text !important;
+        font-family: $font-code !important;
+        
+        &:hover, &.active {
+          background: rgba(var(--matrix-primary-rgb), 0.2) !important;
+          color: var(--matrix-primary) !important;
+        }
+      }
+    }
+  }
+  
+  // Media attachment preview
+  .compose-form__upload,
+  .compose-form__uploads,
+  .compose-form__upload-wrapper,
+  .upload-progress,
+  .media-upload {
+    background: rgba(0, 0, 0, 0.8) !important;
+    border: 1px solid var(--matrix-primary-dark) !important;
+    border-radius: 8px !important;
+  }
+  
+  .compose-form__upload-thumbnail,
+  .media-gallery__item-thumbnail {
+    border: 2px solid var(--matrix-primary-dark) !important;
+    
+    &:hover {
+      border-color: var(--matrix-primary) !important;
+    }
+  }
+  
+  // Upload action buttons (X, Edit, ALT)
+  .compose-form__upload__actions,
+  .compose-form__upload-button-bar {
+    background: rgba(0, 0, 0, 0.8) !important;
+    
+    button, .icon-button {
+      background: rgba(0, 0, 0, 0.9) !important;
+      color: var(--matrix-primary) !important;
+      border: 1px solid var(--matrix-primary-dark) !important;
+      
+      &:hover {
+        background: var(--matrix-primary) !important;
+        color: $matrix-black !important;
+      }
+    }
+  }
+  
+  // ALT badge
+  .compose-form__upload__warning,
+  [class*="alt-badge"],
+  .alt-indicator {
+    background: rgba(var(--matrix-primary-rgb), 0.2) !important;
+    color: var(--matrix-primary) !important;
+    border: 1px solid var(--matrix-primary) !important;
+    font-family: $font-code !important;
+  }
+  
+  // Compose form bottom toolbar icons
+  .compose-form__buttons,
+  .compose-form__buttons-wrapper {
+    background: transparent !important;
+    border-top: 1px solid var(--matrix-primary-dark) !important;
+    padding-top: 10px !important;
+    
+    button, .icon-button, .text-icon-button {
+      color: var(--matrix-primary) !important;
+      background: transparent !important;
+      transition: all 0.2s ease !important;
+      
+      &:hover {
+        color: $matrix-text !important;
+        text-shadow: 0 0 10px var(--matrix-primary-glow) !important;
+        transform: scale(1.1);
+      }
+      
+      &.active {
+        color: var(--matrix-primary) !important;
+        text-shadow: 0 0 15px var(--matrix-primary-glow) !important;
+      }
+    }
+  }
+  
+  // Character counter - Matrix style
+  .character-counter {
+    color: var(--matrix-primary) !important;
+    font-family: $font-code !important;
+    text-shadow: 0 0 5px var(--matrix-primary-glow) !important;
+    
+    &.character-counter--over {
+      color: $matrix-error !important;
+      text-shadow: 0 0 10px rgba(255, 0, 0, 0.5) !important;
+      animation: pulse-error 1s infinite;
+    }
+  }
+  
+  @keyframes pulse-error {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  
+  // Publish button - Prominent Matrix style
+  .compose-form__publish,
+  .compose-form__publish-button-wrapper {
+    .button {
+      background: linear-gradient(180deg, var(--matrix-primary) 0%, var(--matrix-primary-dark) 100%) !important;
+      color: $matrix-black !important;
+      border: none !important;
+      font-family: $font-code !important;
+      font-weight: bold !important;
+      text-transform: uppercase !important;
+      letter-spacing: 2px !important;
+      box-shadow: 0 0 15px var(--matrix-primary-glow) !important;
+      
+      &:hover {
+        background: linear-gradient(180deg, lighten($matrix-green, 10%) 0%, var(--matrix-primary) 100%) !important;
+        box-shadow: 0 0 25px var(--matrix-primary-glow) !important;
+        transform: scale(1.02);
+      }
+      
+      &:disabled {
+        background: rgba(var(--matrix-primary-rgb), 0.3) !important;
+        color: rgba(0, 0, 0, 0.5) !important;
+        box-shadow: none !important;
+      }
+    }
+  }
+  
+  // Compose form toolbar buttons
+  .compose-form__buttons,
+  .compose-form__buttons-wrapper {
+    background: transparent !important;
+    
+    button,
+    .icon-button,
+    .text-icon-button {
+      color: var(--matrix-primary) !important;
+      background: transparent !important;
+      
+      &:hover {
+        color: $matrix-text !important;
+      }
+      
+      &.active {
+        color: var(--matrix-primary) !important;
+      }
+    }
+  }
+  
+  // Character counter
+  .character-counter {
+    color: var(--matrix-primary-dark) !important;
+    
+    &.character-counter--over {
+      color: $matrix-error !important;
+    }
+  }
+  
+  // Compose form poll
+  .compose-form__poll-wrapper,
+  .poll__option,
+  .poll-form {
+    background: rgba(0, 0, 0, 0.8) !important;
+    
+    input {
+      background: rgba(0, 0, 0, 0.9) !important;
+      color: $matrix-text !important;
+      border-color: var(--matrix-primary-dark) !important;
+    }
+  }
+  
+  // Autosuggest popup (mentions, hashtags)
+  .autosuggest-textarea__suggestions,
+  .compose-form__autosuggest-wrapper {
+    background: rgba(0, 0, 0, 0.98) !important;
+    border: 1px solid var(--matrix-primary-dark) !important;
+    
+    .autosuggest-textarea__suggestions__item {
+      color: $matrix-text !important;
+      
+      &:hover,
+      &.selected {
+        background: rgba(var(--matrix-primary-rgb), 0.2) !important;
+        color: var(--matrix-primary) !important;
+      }
+    }
+  }
+  
+  // Search bar
+  .search,
+  .search__input,
+  .search__icon {
+    background: rgba(0, 0, 0, 0.8) !important;
+    color: $matrix-text !important;
+  }
+  
+  .search__popout,
+  .search-results,
+  .search-results__section,
+  .search-results__hashtag {
+    background: rgba(0, 0, 0, 0.95) !important;
+    color: $matrix-text !important;
+    border-color: var(--matrix-primary-dark) !important;
+  }
+
+  // =============================================================================
+  // ICON BUTTONS & ACTIONS
+  // =============================================================================
+  
+  .icon-button,
+  .text-icon-button,
+  .status__action-bar-button,
+  .detailed-status__action-bar-button {
+    color: var(--matrix-primary-dark) !important;
+    
+    &:hover,
+    &:focus,
+    &.active {
+      color: var(--matrix-primary) !important;
+    }
+  }
+  
+  // Reply/Boost/Favorite icons
+  .status__action-bar,
+  .detailed-status__action-bar {
+    .icon-button {
+      color: var(--matrix-primary-dark) !important;
+      
+      &:hover {
+        color: var(--matrix-primary) !important;
+      }
+      
+      &.active {
+        color: var(--matrix-primary) !important;
+      }
+    }
+  }
+  
+  // Boost icon when boosted
+  .status__action-bar-button.icon-button--with-counter.active {
+    color: var(--matrix-primary) !important;
+  }
+
+  // =============================================================================
+  // COLUMNS & LAYOUT
+  // =============================================================================
+  
+  .columns-area,
+  .columns-area__panels,
+  .columns-area__panels__pane,
+  .columns-area__panels__main,
+  .column,
+  .column-back-button,
+  .column-header__back-button {
+    background: transparent !important;
+  }
+  
+  .column > .scrollable {
+    background: rgba(0, 0, 0, 0.6) !important;
+  }
+  
+  // Empty column indicator
+  .empty-column-indicator,
+  .error-column {
+    background: transparent !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  // =============================================================================
+  // TOOLTIPS & POPOVERS
+  // =============================================================================
+  
+  .tooltip,
+  [data-tooltip],
+  .popover,
+  .popover__inner {
+    background: rgba(0, 0, 0, 0.98) !important;
+    color: $matrix-text !important;
+    border: 1px solid var(--matrix-primary-dark) !important;
+  }
+
+  // =============================================================================
+  // LOADING INDICATORS
+  // =============================================================================
+  
+  .loading-indicator,
+  .loading-bar {
+    background: transparent !important;
+    
+    .loading-indicator__figure {
+      border-color: var(--matrix-primary) transparent transparent !important;
+    }
+  }
+  
+  // Skeleton loading - comprehensive
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      rgba(var(--matrix-primary-rgb), 0.1) 0%,
+      rgba(var(--matrix-primary-rgb), 0.2) 50%,
+      rgba(var(--matrix-primary-rgb), 0.1) 100%
+    ) !important;
+    border-radius: inherit !important;
+  }
+
+  // =============================================================================
+  // ACCOUNT MEDIA TABS & GALLERY PLACEHOLDERS
+  // =============================================================================
+  
+  // Hashtag bar pills - dark background
+  .hashtag-bar {
+    a {
+      background: rgba(var(--matrix-primary-rgb), 0.15) !important;
+      color: var(--matrix-primary) !important;
+      border: 1px solid rgba(var(--matrix-primary-rgb), 0.3) !important;
+      
+      &:hover,
+      &:focus,
+      &:active {
+        background: rgba(var(--matrix-primary-rgb), 0.25) !important;
+      }
+    }
+  }
+  
+  // Featured tags pills
+  .featured-tags,
+  .account__featured-tags {
+    background: transparent !important;
+    
+    a, button, .featured-tag {
+      background: rgba(0, 0, 0, 0.8) !important;
+      color: var(--matrix-primary) !important;
+      border: 1px solid rgba(var(--matrix-primary-rgb), 0.3) !important;
+    }
+  }
+  
+  // Account gallery container and items
+  .account-gallery__container {
+    background: transparent !important;
+    
+    .account-gallery__item {
+      background: rgba(0, 0, 0, 0.6) !important;
+      border: 1px solid rgba(var(--matrix-primary-rgb), 0.2) !important;
+      
+      &:hover {
+        border-color: var(--matrix-primary) !important;
+      }
+    }
+  }
+  
+  // =============================================================================
+  // MEDIA FILTER BAR - Matrix style for Originals/Public/Alt text filters
+  // =============================================================================
+  .media-filter-bar {
+    background: rgba(0, 0, 0, 0.9) !important;
+    border-bottom: 1px solid rgba(var(--matrix-primary-rgb), 0.3) !important;
+    
+    .filter-chip {
+      background: rgba(0, 0, 0, 0.8) !important;
+      color: var(--matrix-primary) !important;
+      border: 1px solid rgba(var(--matrix-primary-rgb), 0.4) !important;
+      
+      &:hover {
+        background: rgba(var(--matrix-primary-rgb), 0.15) !important;
+        border-color: var(--matrix-primary) !important;
+      }
+      
+      &.active {
+        background: var(--matrix-primary) !important;
+        color: #000 !important;
+        border-color: var(--matrix-primary) !important;
+        box-shadow: 0 0 10px rgba(var(--matrix-primary-rgb), 0.5);
+      }
+    }
+  }
+  
+  // Story thumbnails (can appear in media views)
+  .story__thumbnail {
+    background: rgba(0, 0, 0, 0.8) !important;
+    
+    .skeleton {
+      background: linear-gradient(
+        90deg,
+        rgba(var(--matrix-primary-rgb), 0.1) 0%,
+        rgba(var(--matrix-primary-rgb), 0.2) 50%,
+        rgba(var(--matrix-primary-rgb), 0.1) 100%
+      ) !important;
+    }
+  }
+  
+  // =============================================================================
+  // INLINE FOLLOW SUGGESTIONS ("Wem folgen?" cards)
+  // =============================================================================
+  .inline-follow-suggestions,
+  .follow-recommendations {
+    background: rgba(0, 0, 0, 0.85) !important;
+    border-color: var(--matrix-primary-dark) !important;
+    
+    // Header text
+    &__header {
+      h3 {
+        color: var(--matrix-primary) !important;
+      }
+      
+      .link-button {
+        color: var(--matrix-primary) !important;
+        
+        &:hover {
+          color: $matrix-text !important;
+        }
+      }
+    }
+    
+    // Individual suggestion cards
+    &__body__scrollable__card {
+      background: rgba(0, 0, 0, 0.9) !important;
+      border: 1px solid rgba(var(--matrix-primary-rgb), 0.4) !important;
+      
+      &:hover {
+        border-color: var(--matrix-primary) !important;
+        box-shadow: 0 0 10px rgba(var(--matrix-primary-rgb), 0.3) !important;
+      }
+      
+      // Close/dismiss button
+      > .icon-button {
+        color: var(--matrix-primary) !important;
+        
+        &:hover {
+          color: $matrix-text !important;
+        }
+      }
+      
+      // Avatar border
+      .account__avatar {
+        border-color: rgba(var(--matrix-primary-rgb), 0.3) !important;
+        background-color: rgba(0, 0, 0, 0.8) !important;
+      }
+      
+      // Display name
+      &__text-stack {
+        .display-name__html {
+          color: $matrix-text !important;
+        }
+        
+        .display-name__account {
+          color: var(--matrix-primary) !important;
+        }
+        
+        &__source {
+          color: rgba(var(--matrix-primary-rgb), 0.6) !important;
+        }
+      }
+      
+      // Follow button
+      button, .button {
+        background: var(--matrix-primary) !important;
+        color: #000 !important;
+        border: none !important;
+        
+        &:hover {
+          background: var(--matrix-primary-light) !important;
+          box-shadow: 0 0 10px rgba(var(--matrix-primary-rgb), 0.5) !important;
+        }
+      }
+    }
+    
+    // Scroll buttons
+    &__body__scroll-button {
+      &__icon {
+        background: var(--matrix-primary) !important;
+        color: #000 !important;
+      }
+    }
+  }
+  
+  // Explore suggestions card (alternative layout)
+  .explore-suggestions-card {
+    background: rgba(0, 0, 0, 0.85) !important;
+    border-color: var(--matrix-primary-dark) !important;
+    
+    &__source {
+      color: rgba(var(--matrix-primary-rgb), 0.6) !important;
+    }
+  }
+  
+  // Generic pills and tags
+  .domain-pill,
+  .relationship-tag,
+  .account__relationship,
+  [class*="pill"],
+  [class*="tag"]:not(a):not(button) {
+    background: rgba(0, 0, 0, 0.8) !important;
+    color: var(--matrix-primary) !important;
+    border-color: rgba(var(--matrix-primary-rgb), 0.3) !important;
+  }
+  
+  // Empty column indicators
+  .empty-column-indicator {
+    color: var(--matrix-primary) !important;
+    background: transparent !important;
+  }
+  
+  // Picture placeholders
+  .picture-in-picture-placeholder {
+    background: rgba(0, 0, 0, 0.8) !important;
+    border-color: var(--matrix-primary-dark) !important;
+  }
+  
+  // Modal placeholders
+  .modal-placeholder {
+    background: rgba(0, 0, 0, 0.9) !important;
+  }
+  
+  // Force all CSS variable backgrounds to dark
+  [style*="--color-bg-primary"],
+  [style*="--color-bg-secondary"],
+  [style*="--color-bg-tertiary"],
+  [style*="--color-bg-brand-softer"],
+  [style*="--color-bg-brand-soft"] {
+    background: rgba(0, 0, 0, 0.85) !important;
+  }
+
+  // =============================================================================
+  // TOASTS & SNACKBARS
+  // =============================================================================
+  
+  .snackbar,
+  .toast {
+    background: rgba(0, 0, 0, 0.95) !important;
+    color: $matrix-text !important;
+    border: 1px solid var(--matrix-primary) !important;
+  }
+
+  // =============================================================================
+  // MEDIA ATTACHMENTS
+  // =============================================================================
+  
+  .media-gallery,
+  .media-gallery__item,
+  .video-player,
+  .audio-player {
+    background: rgba(0, 0, 0, 0.8) !important;
+    border-color: var(--matrix-primary-dark) !important;
+  }
+  
+  .media-gallery__gifv__label,
+  .media-gallery__item__badges {
+    background: rgba(0, 0, 0, 0.8) !important;
+    color: var(--matrix-primary) !important;
+  }
+  
+  // Sensitive content warning
+  .spoiler-button,
+  .spoiler-button__overlay {
+    background: rgba(0, 0, 0, 0.9) !important;
+    
+    span {
+      color: $matrix-text !important;
+    }
+  }
+
+  // =============================================================================
+  // AUDIO & VIDEO PLAYER CONTROLS - MATRIX STYLE
+  // =============================================================================
+  
+  // Audio Player
+  .audio-player {
+    background: rgba(0, 0, 0, 0.9) !important;
+    border: 1px solid var(--matrix-primary-dark) !important;
+    
+    // Play/Pause button
+    .audio-player__play-button,
+    .player-button,
+    button[aria-label="Play"],
+    button[aria-label="Pause"],
+    button[aria-label="Abspielen"],
+    button[aria-label="Pause"] {
+      color: $matrix-text !important;
+      background: transparent !important;
+      
+      .icon,
+      svg {
+        fill: $matrix-text !important;
+        color: $matrix-text !important;
+      }
+      
+      &:hover {
+        color: var(--matrix-primary) !important;
+        
+        .icon,
+        svg {
+          fill: var(--matrix-primary) !important;
+          color: var(--matrix-primary) !important;
+        }
+      }
+    }
+    
+    // Progress bar
+    .audio-player__progress,
+    .audio-player__progress-placeholder {
+      background: rgba(255, 255, 255, 0.2) !important;
+      
+      &::before,
+      .audio-player__buffer,
+      .audio-player__progress__loaded {
+        background: rgba(var(--matrix-primary-rgb), 0.3) !important;
+      }
+      
+      .audio-player__progress__played,
+      &::after {
+        background: var(--matrix-primary) !important;
+      }
+    }
+    
+    // Seek handle
+    .audio-player__seek__handle,
+    .audio-player__progress__handle {
+      background: var(--matrix-primary) !important;
+      border-color: var(--matrix-primary) !important;
+    }
+    
+    // Time display
+    .audio-player__time,
+    .audio-player__time-current,
+    .audio-player__time-total,
+    .audio-player__time-separator {
+      color: $matrix-text !important;
+    }
+    
+    // Volume control
+    .audio-player__volume {
+      &::before {
+        background: var(--matrix-primary) !important;
+      }
+      
+      button {
+        color: $matrix-text !important;
+        
+        svg, .icon {
+          fill: $matrix-text !important;
+        }
+        
+        &:hover {
+          color: var(--matrix-primary) !important;
+          
+          svg, .icon {
+            fill: var(--matrix-primary) !important;
+          }
+        }
+      }
+    }
+    
+    // Mute button
+    .audio-player__mute,
+    button[aria-label="Mute"],
+    button[aria-label="Unmute"],
+    button[aria-label="Stummschalten"] {
+      color: $matrix-text !important;
+      
+      svg, .icon {
+        fill: $matrix-text !important;
+        color: $matrix-text !important;
+      }
+    }
+    
+    // Waveform
+    .audio-player__waveform {
+      background: transparent !important;
+      
+      canvas {
+        filter: hue-rotate(80deg) saturate(2);
+      }
+    }
+  }
+  
+  // Video Player
+  .video-player {
+    background: rgba(0, 0, 0, 0.9) !important;
+    border: 1px solid var(--matrix-primary-dark) !important;
+    
+    // Controls bar
+    .video-player__controls {
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.9)) !important;
+    }
+    
+    // All buttons in video player
+    .video-player__buttons {
+      button,
+      a {
+        color: $matrix-text !important;
+        
+        svg, .icon {
+          fill: $matrix-text !important;
+          color: $matrix-text !important;
+        }
+        
+        &:hover {
+          color: var(--matrix-primary) !important;
+          
+          svg, .icon {
+            fill: var(--matrix-primary) !important;
+            color: var(--matrix-primary) !important;
+          }
+        }
+      }
+    }
+    
+    // Play button overlay
+    .video-player__play,
+    .video-player__play-icon {
+      color: $matrix-text !important;
+      background: rgba(0, 0, 0, 0.7) !important;
+      border-color: $matrix-text !important;
+      
+      svg, .icon {
+        fill: $matrix-text !important;
+      }
+      
+      &:hover {
+        background: rgba(0, 0, 0, 0.9) !important;
+        border-color: var(--matrix-primary) !important;
+        
+        svg, .icon {
+          fill: var(--matrix-primary) !important;
+        }
+      }
+    }
+    
+    // Seek bar
+    .video-player__seek {
+      background: rgba(255, 255, 255, 0.2) !important;
+      
+      &::before,
+      .video-player__seek__buffer {
+        background: rgba(var(--matrix-primary-rgb), 0.3) !important;
+      }
+      
+      &::after,
+      .video-player__seek__progress {
+        background: var(--matrix-primary) !important;
+      }
+    }
+    
+    // Seek handle
+    .video-player__seek__handle {
+      background: var(--matrix-primary) !important;
+      border-color: var(--matrix-primary) !important;
+    }
+    
+    // Volume bar
+    .video-player__volume {
+      &::before {
+        background: var(--matrix-primary) !important;
+      }
+    }
+    
+    // Time display
+    .video-player__time,
+    .video-player__time-current,
+    .video-player__time-total,
+    .video-player__time-sep {
+      color: $matrix-text !important;
+    }
+    
+    // Fullscreen button
+    .video-player__fullscreen,
+    button[aria-label="Full screen"],
+    button[aria-label="Vollbild"] {
+      color: $matrix-text !important;
+      
+      svg, .icon {
+        fill: $matrix-text !important;
+      }
+      
+      &:hover {
+        color: var(--matrix-primary) !important;
+        
+        svg, .icon {
+          fill: var(--matrix-primary) !important;
+        }
+      }
+    }
+  }
+  
+  // Generic player button styles (catches all player buttons)
+  .player-button,
+  [class*="player"] button,
+  [class*="player"] .icon-button {
+    color: $matrix-text !important;
+    
+    svg, .icon {
+      fill: $matrix-text !important;
+      color: $matrix-text !important;
+    }
+    
+    &:hover {
+      color: var(--matrix-primary) !important;
+      
+      svg, .icon {
+        fill: var(--matrix-primary) !important;
+        color: var(--matrix-primary) !important;
+      }
+    }
+  }
+  
+  // SVG icons inside players - nuclear option
+  .audio-player svg,
+  .video-player svg {
+    fill: $matrix-text !important;
+    color: $matrix-text !important;
+    
+    path {
+      fill: inherit !important;
+    }
+  }
+
+  // =============================================================================
+  // ACCOUNT LIST ITEMS
+  // =============================================================================
+  
+  .account,
+  .account__wrapper,
+  .account-authorize,
+  .account-authorize__wrapper {
+    background: transparent !important;
+    
+    &:hover {
+      background: rgba(var(--matrix-primary-rgb), 0.05) !important;
+    }
+  }
+  
+  .account__relationship,
+  .relationship-tag {
+    background: rgba(var(--matrix-primary-rgb), 0.1) !important;
+    color: var(--matrix-primary) !important;
+  }
+
+  // =============================================================================
+  // FOOTER & MISC
+  // =============================================================================
+  
+  .getting-started__footer,
+  .keyboard-shortcuts,
+  .about__footer {
+    background: transparent !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+    
+    a {
+      color: var(--matrix-primary-dark) !important;
+      
+      &:hover {
+        color: var(--matrix-primary) !important;
+      }
+    }
+  }
+  
+  // Version info
+  .getting-started__footer p {
+    color: rgba(255, 255, 255, 0.4) !important;
+  }
+
+  // =============================================================================
+  // REACTION PICKER
+  // =============================================================================
+  
+  .reaction-picker,
+  .reaction-picker__emoji {
+    background: rgba(0, 0, 0, 0.95) !important;
+    border-color: var(--matrix-primary-dark) !important;
+  }
+
+  // =============================================================================
+  // HASHTAG BAR
+  // =============================================================================
+  
+  .hashtag-bar,
+  .trends__item {
+    background: transparent !important;
+    
+    &:hover {
+      background: rgba(var(--matrix-primary-rgb), 0.1) !important;
+    }
+    
+    .trends__item__name {
+      color: var(--matrix-primary) !important;
+    }
+    
+    .trends__item__current {
+      color: $matrix-text !important;
+    }
+  }
+
+  // =============================================================================
+  // FIX: All remaining white/light backgrounds
+  // =============================================================================
+  
+  // Generic catch-all for any remaining light elements
+  [style*="background: #fff"],
+  [style*="background: white"],
+  [style*="background-color: #fff"],
+  [style*="background-color: white"],
+  [style*="background: rgb(255"],
+  [style*="background-color: rgb(255"] {
+    background: rgba(0, 0, 0, 0.9) !important;
+  }
+  
+  // Ensure all SVG icons are visible
+  svg {
+    fill: currentColor;
+  }
+  
+  .icon,
+  [class*="__icon"] svg {
+    fill: currentColor !important;
+  }
+
+  // =============================================================================
+  // FINAL COMPREHENSIVE DARK MODE OVERRIDES
+  // Catch ALL remaining light elements
+  // =============================================================================
+  
+  // Force dark on common light backgrounds
+  .bg-white,
+  .bg-light,
+  .background-white,
+  [class*="bg-white"],
+  [class*="bg-light"] {
+    background: rgba(0, 0, 0, 0.9) !important;
+  }
+  
+  // Alert/Notice boxes
+  .flash-message,
+  .flash-message-info,
+  .flash-message-notice,
+  .flash-message-warning,
+  .flash-message-error,
+  .flash-message-alert,
+  .notification-bar,
+  .announcement,
+  .announcement-content,
+  .dismissable-banner,
+  .dismissable-banner__message,
+  .sign-in-banner,
+  .follow-recommendations-container,
+  .follow-recommendations__header,
+  .interaction-modal__lead {
+    background: rgba(0, 0, 0, 0.9) !important;
+    color: $matrix-text !important;
+    border: 1px solid var(--matrix-primary-dark) !important;
+  }
+  
+  // Dropdown buttons (compose form)
+  .dropdown-button,
+  [class*="dropdown"] button,
+  [class*="dropdown"] > button,
+  .privacy-dropdown__value,
+  .privacy-dropdown button,
+  .language-dropdown button,
+  button[aria-haspopup="listbox"],
+  button[aria-haspopup="menu"],
+  [role="listbox"],
+  [role="combobox"] {
+    background: rgba(0, 0, 0, 0.85) !important;
+    color: var(--matrix-primary) !important;
+    border: 1px solid var(--matrix-primary-dark) !important;
+    
+    &:hover, &:focus {
+      background: rgba(var(--matrix-primary-rgb), 0.15) !important;
+      border-color: var(--matrix-primary) !important;
+    }
+  }
+  
+  // All select elements
+  select,
+  select option,
+  .select,
+  .select__control,
+  .select__menu,
+  .select__option {
+    background: rgba(0, 0, 0, 0.9) !important;
+    color: $matrix-text !important;
+  }
+  
+  // Textarea and input - FORCE DARK
+  textarea,
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="url"],
+  input[type="number"],
+  input[type="tel"],
+  .autosuggest-textarea__textarea,
+  .spoiler-input__input,
+  .compose-form__textarea,
+  .compose-form textarea,
+  .autosuggest-textarea,
+  .autosuggest-textarea__wrapper,
+  [contenteditable="true"],
+  .public-DraftEditor-content,
+  .DraftEditor-root,
+  .DraftEditor-editorContainer,
+  div[role="textbox"],
+  div[contenteditable] {
+    background: #000 !important;
+    background-color: #000 !important;
+    color: $matrix-text !important;
+    border: 1px solid var(--matrix-primary-dark) !important;
+    caret-color: var(--matrix-primary) !important;
+    
+    &::placeholder {
+      color: var(--matrix-primary-dark) !important;
+      opacity: 0.7 !important;
+    }
+    
+    &:focus {
+      background: #000 !important;
+      border-color: var(--matrix-primary) !important;
+      box-shadow: 0 0 5px var(--matrix-primary-glow) !important;
+      outline: none !important;
+    }
+  }
+  
+  // Compose form wrapper - force black
+  .compose-form__autosuggest-wrapper,
+  .compose-form__textarea-wrapper,
+  .compose-form__highlightable {
+    background: #000 !important;
+  }
+  
+  // Action bars and toolbars
+  .compose-form__buttons,
+  .detailed-status__action-bar,
+  .status__action-bar,
+  .account__action-bar,
+  .account-timeline__header,
+  .account__header__tabs__buttons,
+  .notification__actions,
+  .picture-in-picture__footer,
+  .audio-player__controls,
+  .video-player__controls {
+    background: transparent !important;
+  }
+  
+  // Middle column content areas
+  .scrollable,
+  .item-list,
+  .column-content,
+  .column > div {
+    background: transparent !important;
+  }
+  
+  // Right sidebar
+  .columns-area__panels__pane__inner,
+  .navigation-panel,
+  .compose-panel,
+  .navigation-panel__menu {
+    background: rgba(0, 0, 0, 0.7) !important;
+  }
+  
+  // Search results
+  .search-results__section,
+  .search-results__section__header,
+  .trends__item,
+  .account-card {
+    background: rgba(0, 0, 0, 0.8) !important;
+    border-color: var(--matrix-primary-dark) !important;
+  }
+  
+  // Conversation threads
+  .conversation,
+  .conversation__content,
+  .conversation__content__names,
+  .conversation__content__info {
+    background: rgba(0, 0, 0, 0.7) !important;
+  }
+  
+  // Privacy dropdown specific fixes
+  .privacy-dropdown__dropdown,
+  .privacy-dropdown__option,
+  .dropdown-menu,
+  .dropdown-menu__item {
+    background: rgba(0, 0, 0, 0.98) !important;
+    
+    &:hover {
+      background: rgba(var(--matrix-primary-rgb), 0.2) !important;
+    }
+  }
+  
+  // Mastodon logo text
+  .logo svg,
+  .logo path,
+  .brand svg,
+  .brand path {
+    fill: var(--matrix-primary) !important;
+  }
+  
+  // Character counter fix
+  .compose-form__character-counter,
+  .character-counter {
+    background: transparent !important;
+    color: var(--matrix-primary) !important;
+  }
+
+  // Follow button and action buttons
+  .button,
+  .icon-button,
+  .text-icon-button {
+    &:not(.button--primary):not([type="submit"]) {
+      background: rgba(var(--matrix-primary-rgb), 0.1) !important;
+      color: var(--matrix-primary) !important;
+      border-color: var(--matrix-primary-dark) !important;
+    }
+  }
+
+  // Links in navigation
+  .column-link,
+  .navigation-panel a,
+  .getting-started__wrapper a {
+    color: $matrix-text !important;
+    
+    &:hover, &.active {
+      color: var(--matrix-primary) !important;
+      background: rgba(var(--matrix-primary-rgb), 0.1) !important;
+    }
+    
+    .icon {
+      color: var(--matrix-primary) !important;
+    }
+  }
+
+  // =============================================================================
+  // NUCLEAR OPTION: Force dark on EVERYTHING with light backgrounds
+  // =============================================================================
+  
+  // Any element with white/light background
+  *[style*="background: white"],
+  *[style*="background:#fff"],
+  *[style*="background: #fff"],
+  *[style*="background-color: white"],
+  *[style*="background-color:#fff"],
+  *[style*="background-color: #fff"],
+  *[style*="background: rgb(255"],
+  *[style*="background-color: rgb(255"] {
+    background: rgba(0, 0, 0, 0.95) !important;
+    color: $matrix-text !important;
+  }
+  
+  // Info banners, notices, warnings - ALL dark
+  .notice,
+  .warning,
+  .info,
+  .alert,
+  .banner,
+  .message,
+  .hint-text,
+  .explanation,
+  .lead,
+  .intro,
+  .description-text,
+  [class*="notice"],
+  [class*="warning"],
+  [class*="info"],
+  [class*="alert"],
+  [class*="banner"],
+  [class*="message"],
+  [class*="hint"],
+  [class*="explanation"],
+  [class*="lead"],
+  [class*="intro"] {
+    background: rgba(0, 0, 0, 0.9) !important;
+    color: $matrix-text !important;
+    border-color: var(--matrix-primary-dark) !important;
+    
+    a {
+      color: var(--matrix-primary) !important;
+    }
+  }
+  
+  // Direct messages / Private mentions info box
+  .conversation__header,
+  .conversation__header__info,
+  .direct-message-info,
+  .privacy-notice,
+  .encryption-notice,
+  .dismissable-banner,
+  .dismissable-banner__message,
+  .follow-request-banner,
+  .moved-account-banner,
+  .account-memorial-banner,
+  .limited-account-banner,
+  .suspended-account-banner,
+  .announcement-content,
+  .server-banner__meta,
+  .interaction-modal__lead,
+  .sign-in-banner,
+  .empty-column-indicator__message,
+  .regeneration-indicator,
+  .missing-indicator {
+    background: rgba(0, 0, 0, 0.9) !important;
+    color: $matrix-text !important;
+    border: 1px solid var(--matrix-primary-dark) !important;
+    
+    p, span, div {
+      color: $matrix-text !important;
+    }
+    
+    a {
+      color: var(--matrix-primary) !important;
+    }
+  }
+  
+  // Column headers and section headers
+  .column-header__collapsible-inner,
+  .column-settings__row,
+  .column-settings__section,
+  .setting-meta__label,
+  .setting-toggle__label {
+    background: rgba(0, 0, 0, 0.85) !important;
+    color: $matrix-text !important;
+  }
+  
+  // Any div/section with very light computed backgrounds
+  // Using attribute selectors for inline styles
+  div[style*="background"],
+  section[style*="background"],
+  article[style*="background"],
+  aside[style*="background"],
+  header[style*="background"],
+  footer[style*="background"],
+  main[style*="background"],
+  p[style*="background"],
+  span[style*="background"] {
+    &:not([style*="rgba(0"]):not([style*="rgb(0"]):not([style*="#000"]):not([style*="transparent"]) {
+      background: rgba(0, 0, 0, 0.9) !important;
+    }
+  }
+  
+  // Ensure text is always readable
+  p, span, div, li, td, th, label, a, h1, h2, h3, h4, h5, h6 {
+    &:not([class*="button"]):not([class*="btn"]) {
+      // Only override if parent has light background
+      // This is a safety net
+    }
+  }
+  
+  // Force all links to be green
+  a:not(.button):not(.btn):not([class*="button"]) {
+    color: var(--matrix-primary) !important;
+    
+    &:hover {
+      color: lighten($matrix-green, 15%) !important;
+    }
+  }
+  
+  // More specific banner fixes
+  .dismissable-banner,
+  .sign-in-banner,
+  .follow-recommendations,
+  .account-card__header,
+  .notification__filter-bar,
+  .account__section-headline {
+    background: rgba(0, 0, 0, 0.85) !important;
+    border-color: var(--matrix-primary-dark) !important;
+  }
+  
+  // React components that might have inline styles
+  [data-testid],
+  [data-component] {
+    &[style*="background"] {
+      background: rgba(0, 0, 0, 0.9) !important;
+    }
+  }
+
+  // =============================================================================
+  // STATUS CARD PLAY BUTTON - Preview cards (hearthis.at, YouTube, Bandcamp, etc.)
+  // =============================================================================
+  .status-card__image {
+    // Direct icon children
+    > .icon {
+      color: $matrix-text !important;
+      fill: $matrix-text !important;
+      background: rgba(0, 0, 0, 0.7) !important;
+      border-radius: 50% !important;
+      padding: 8px !important;
+      width: 36px !important;
+      height: 36px !important;
+      box-shadow: 0 0 15px rgba(var(--matrix-primary-rgb), 0.5) !important;
+      
+      svg, path {
+        fill: $matrix-text !important;
+        color: $matrix-text !important;
+      }
+    }
+  }
+  
+  // Status card actions overlay (play button + external link)
+  .status-card__actions {
+    button, a {
+      background: rgba(0, 0, 0, 0.7) !important;
+      color: $matrix-text !important;
+      border: none !important;
+      border-radius: 8px !important;
+      padding: 12px 16px !important;
+      
+      .icon {
+        color: $matrix-text !important;
+        fill: $matrix-text !important;
+        width: 24px !important;
+        height: 24px !important;
+        
+        svg, path {
+          fill: $matrix-text !important;
+          color: $matrix-text !important;
+        }
+      }
+      
+      &:hover {
+        background: rgba(var(--matrix-primary-rgb), 0.3) !important;
+        
+        .icon {
+          color: var(--matrix-primary) !important;
+          fill: var(--matrix-primary) !important;
+          
+          svg, path {
+            fill: var(--matrix-primary) !important;
+            color: var(--matrix-primary) !important;
+          }
+        }
+      }
+    }
+    
+    // The container div
+    > div {
+      background: rgba(0, 0, 0, 0.6) !important;
+      border-radius: 8px !important;
+      padding: 4px !important;
+      gap: 8px !important;
+      display: flex !important;
+    }
+  }
+  
+  // =============================================================================
+  // STATUS CARD VIDEO - Embedded players (Spotify, hearthis.at, etc.)
+  // =============================================================================
+  .status-card-video {
+    position: relative !important;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 20, 0, 0.95) 100%) !important;
+    border: 1px solid rgba(var(--matrix-primary-rgb), 0.3) !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    
+    // Matrix-style loading indicator while iframe loads
+    &::before {
+      content: '▶ Loading player...';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: var(--matrix-primary, #00ff00);
+      font-family: 'VT323', monospace;
+      font-size: 18px;
+      opacity: 0.5;
+      z-index: 0;
+      pointer-events: none;
+      text-shadow: 0 0 10px var(--matrix-primary, #00ff00);
+    }
+
+    iframe {
+      position: relative;
+      z-index: 1;
+      background: transparent !important;
+      border-radius: 8px !important;
+    }
+  }
+  
+  // Expanded status card (video type)
+  .status-card.expanded {
+    .status-card__image {
+      background: rgba(0, 0, 0, 0.9) !important;
+      min-height: 200px;
+      
+      // Show thumbnail image properly
+      img {
+        object-fit: cover !important;
+        width: 100% !important;
+        height: 100% !important;
+      }
+    }
+  }
+  
+  // Ultimate fallback - target by computed light colors
+  // These use !important to override any inline styles
+  .status-card,
+  .status-card__content,
+  .status-card__title,
+  .status-card__description,
+  .status-card__host,
+  .status-card__image,
+  .account-card__header,
+  .account-card__title,
+  .account-card__bio,
+  .directory-card__extra,
+  .directory-card__bar,
+  .trends__item__current,
+  .reply-indicator__content-wrapper,
+  .announcements-list__item,
+  .domain-pill,
+  .account-role {
+    background: rgba(0, 0, 0, 0.85) !important;
+    color: $matrix-text !important;
+  }
+
+  // =============================================================================
+  // ABSOLUTE FINAL - Override ANY white/light element
+  // =============================================================================
+  
+  // Kill all white backgrounds with extreme prejudice
+  * {
+    &[style*="background: #fff"],
+    &[style*="background:#fff"],
+    &[style*="background: white"],
+    &[style*="background:white"],
+    &[style*="background-color: #fff"],
+    &[style*="background-color:#fff"],
+    &[style*="background-color: white"],
+    &[style*="background-color:white"],
+    &[style*="background: rgb(255, 255, 255)"],
+    &[style*="background-color: rgb(255, 255, 255)"] {
+      background: #000 !important;
+      background-color: #000 !important;
+    }
+  }
+  
+  // Force compose form dark
+  .compose-form,
+  .compose-form *,
+  .compose-panel,
+  .compose-panel * {
+    &:not(button):not(.button):not(a):not(svg):not(path):not(img) {
+      background-color: transparent;
+    }
+  }
+  
+  .compose-form__textarea,
+  .compose-form textarea,
+  textarea.compose-form__textarea {
+    background: #000 !important;
+    background-color: #000 !important;
+    color: #fff !important;
+  }
+  
+  // All editable areas must be black
+  [contenteditable="true"],
+  [contenteditable=""],
+  .editable,
+  .editor,
+  .text-editor,
+  .rich-text-editor {
+    background: #000 !important;
+    color: #fff !important;
+  }
+}
