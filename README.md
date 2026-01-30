@@ -1,163 +1,161 @@
-# Mastodon Matrix Theme
+# 🟢 Mastodon Matrix Theme
 
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
-[![Mastodon Compatible](https://img.shields.io/badge/Mastodon-4.x-blueviolet)](https://joinmastodon.org/)
-
-A cyberpunk Matrix-style theme for Mastodon instances.
-
----
-
-<div align="center">
+A complete cyberpunk Matrix-style theme package for Mastodon, featuring an interactive terminal landing page, matrix rain animations, custom emojis, and full deployment configurations.
 
 ![Matrix Theme Preview](screenshots/preview.png)
 
-**🟢 Green neon aesthetics • 💻 Hacker fonts • 🌧️ Matrix rain animation**
+## ✨ Features
 
-</div>
+| Feature | Description |
+|---------|-------------|
+| 🎨 **Matrix Theme** | Full SCSS theme with 3200+ lines of cyberpunk styling |
+| 🌧️ **Matrix Rain** | Animated falling code background (Web Worker based) |
+| 💻 **Terminal Landing** | Interactive CLI landing page with bot protection |
+| 🤖 **AI Characters** | Chat with Neo, Morpheus, Trinity, Oracle, Smith |
+| 🎮 **Easter Eggs** | Hidden Tetris game! |
+| 🎨 **Color Variants** | Green, Red, Blue, Purple themes |
+| 😀 **120+ Emojis** | Custom hacker/tech themed emojis |
+| ⌨️ **Theme Toggle** | Ctrl+Shift+M to toggle theme |
+| 🔒 **Bot Protection** | Terminal challenge before login |
+| 🐳 **Docker Ready** | nginx.conf & systemd service included |
 
----
-
-## Features
-
-- **Matrix Green Color Palette** (`#00ff00`)
-- **VT323 Hacker Font** for headings (UTF-8 compatible)
-- **Matrix Rain Animation** background
-- **Glitch Effects** on hover
-- **Dark Background** with high contrast text
-- **100% Fediverse Compatible** (no structural changes)
-
-## Installation
-
-### Quick Install (Standalone - Always On)
-
-Use `matrix_theme_standalone.scss` for a simple always-on theme:
-
-```bash
-# Copy to Mastodon
-cp styles/matrix_theme_standalone.scss /path/to/mastodon/app/javascript/styles/
-
-# Add to application.scss (at the end)
-echo "@import 'matrix_theme_standalone';" >> app/javascript/styles/application.scss
-
-# Rebuild & restart
-RAILS_ENV=production bundle exec rails assets:precompile
-systemctl restart mastodon-web mastodon-sidekiq
-```
-
-### Advanced Install (Toggleable Theme)
-
-Use `matrix_theme.scss` for a full-featured toggleable theme:
-
-1. **Copy files**:
-```bash
-cp styles/matrix_theme.scss /path/to/mastodon/app/javascript/styles/
-cp js/matrix_rain.js /path/to/mastodon/app/javascript/mastodon/features/matrix/
-```
-
-2. **Create a Mastodon skin** (`app/javascript/styles/mastodon/matrix.scss`):
-```scss
-@import 'application';
-@import '../matrix_theme';
-
-// Apply theme globally
-body {
-  @extend .theme-matrix;
-}
-```
-
-3. **Register in `config/themes.yml`**:
-```yaml
-default: styles/mastodon/default.scss
-matrix: styles/mastodon/matrix.scss
-contrast: styles/mastodon/contrast.scss
-```
-
-4. **Rebuild & restart**
-
-Users can select "Matrix" in Preferences → Appearance.
-
-## Configuration
-
-### Environment Variables
-
-```bash
-# Enable Matrix theme as default
-ERRORDON_THEME=matrix
-
-# Color variants (green, red, blue, purple)
-ERRORDON_THEME_COLOR=green
-
-# Enable/disable Matrix rain animation
-ERRORDON_MATRIX_RAIN=true
-```
-
-### Customizing Colors
-
-Edit the variables at the top of `matrix_theme.scss`:
-
-```scss
-// Core Matrix colors
-$matrix-primary: #00ff00;        // Main green
-$matrix-secondary: #003300;      // Dark green
-$matrix-background: #0a0a0a;     // Near black
-$matrix-surface: #0d0d0d;        // Slightly lighter
-$matrix-text: #ffffff;           // White text
-$matrix-text-secondary: #b0b0b0; // Gray text
-```
-
-### Color Variants
-
-The theme supports multiple color variants:
-
-| Variant | Primary Color | CSS Variable |
-|---------|---------------|--------------|
-| Green (default) | `#00ff00` | `--matrix-primary: #00ff00` |
-| Red | `#ff0040` | `--matrix-primary: #ff0040` |
-| Blue | `#00ffff` | `--matrix-primary: #00ffff` |
-| Purple | `#bf00ff` | `--matrix-primary: #bf00ff` |
-
-## Files Included
+## 📁 File Structure
 
 ```
 mastodon-matrix-theme/
-├── README.md                      # This file
-├── LICENSE                        # AGPLv3 License
-├── install.sh                     # Installation script
+├── README.md                           # This file
+├── LICENSE                             # AGPLv3 License
+├── install.sh                          # Installation helper script
 │
-├── styles/                        # SCSS Themes
-│   ├── matrix_theme.scss          # Full theme (3200+ lines, toggle)
-│   └── matrix_theme_standalone.scss # Simple always-on version
+├── styles/                             # 🎨 SCSS Themes
+│   ├── matrix_theme.scss               # Full theme (3200+ lines, toggle)
+│   └── matrix_theme_standalone.scss    # Simple always-on version
 │
-├── js/                            # JavaScript
-│   ├── matrix_rain.js             # Matrix rain animation + splash
-│   ├── matrix_background.js       # Alternative background effect
-│   └── matrix_theme.ts            # Theme toggle controller (TS)
+├── js/                                 # 💻 JavaScript
+│   ├── matrix_rain.js                  # Matrix rain + splash screen
+│   ├── matrix_background.js            # Alternative background effect
+│   └── matrix_theme.ts                 # Theme toggle controller (TS)
 │
-├── terminal/                      # Landing Page Terminal
-│   ├── index.html                 # Main terminal page
-│   ├── main.js                    # Terminal JavaScript
-│   ├── main.css                   # Terminal styles
-│   ├── tetris.html                # Easter egg: Tetris game!
-│   ├── tetris-script.js           # Tetris game logic
-│   ├── tetris-style.css           # Tetris styles
-│   └── talk_db_*.json             # AI chat character databases
+├── terminal/                           # 🖥️ Landing Page Terminal
+│   ├── index.html                      # Interactive terminal page
+│   ├── main.js                         # Terminal JavaScript
+│   ├── main.css                        # Terminal styles
+│   ├── tetris.html                     # 🎮 Easter egg: Tetris!
+│   ├── tetris-script.js                # Tetris game logic
+│   ├── tetris-style.css                # Tetris styles
+│   └── talk_db_*.json                  # AI chat character databases
 │
-├── rails/                         # Rails integration
-│   └── matrix_controller.rb       # Controller for terminal routes
+├── emojis/                             # 😀 120+ Custom Emojis
+│   ├── hacker.svg                      # Hacker face
+│   ├── matrix_code.svg                 # Matrix code
+│   ├── terminal.svg                    # Terminal icon
+│   ├── coffee_code.svg                 # Coding with coffee
+│   ├── red_pill.svg / blue_pill.svg    # Matrix pills
+│   └── ... (120+ more)
+│
+├── rails/                              # 🛤️ Rails Integration
+│   ├── matrix_controller.rb            # Terminal routes controller
+│   ├── initializers/
+│   │   └── errordon_theme.rb           # Theme configuration
+│   ├── entrypoints/
+│   │   └── common.ts                   # JS entrypoint example
+│   └── views/
+│       └── application_layout_snippet.haml  # Layout modifications
+│
+├── deploy/                             # 🐳 Deployment Files
+│   ├── nginx.conf                      # nginx configuration
+│   └── mastodon-matrix.service         # systemd service file
+│
+├── docs/                               # 📚 Documentation
+│   └── FRONTEND_MAP_MATRIX_AND_STYLES.md
 │
 └── screenshots/
-    └── preview.png                # Theme preview
+    └── preview.png                     # Theme preview
 ```
 
-## Terminal Landing Page
+---
 
-The Matrix Terminal is a cyberpunk-style landing page with:
+## 🚀 Installation
 
-- **Interactive command line** - Type commands to interact
-- **"Enter Matrix" challenge** - Users type "enter matrix" to proceed
-- **AI Characters** - Chat with Neo, Morpheus, Trinity, Oracle, Smith
-- **Easter Egg** - Hidden Tetris game!
-- **Bot protection** - Prevents automated scrapers
+### Method 1: Standalone Theme (Always On)
+
+Best for instances that want Matrix as the default look.
+
+```bash
+# 1. Copy standalone SCSS
+cp styles/matrix_theme_standalone.scss \
+   /path/to/mastodon/app/javascript/styles/
+
+# 2. Import in Mastodon's main SCSS
+echo '@import "matrix_theme_standalone";' >> \
+   /path/to/mastodon/app/javascript/styles/application.scss
+
+# 3. Copy Matrix rain JS
+cp js/matrix_rain.js \
+   /path/to/mastodon/app/javascript/errordon/matrix/index.js
+
+# 4. Rebuild assets
+cd /path/to/mastodon
+RAILS_ENV=production bundle exec rails assets:precompile
+```
+
+### Method 2: Toggleable Theme (Ctrl+Shift+M)
+
+Best for instances that want theme as an option.
+
+```bash
+# 1. Copy full theme SCSS
+cp styles/matrix_theme.scss \
+   /path/to/mastodon/app/javascript/styles/errordon_matrix.scss
+
+# 2. Copy theme controller
+mkdir -p /path/to/mastodon/app/javascript/mastodon/features/errordon/
+cp js/matrix_theme.ts \
+   /path/to/mastodon/app/javascript/mastodon/features/errordon/
+
+# 3. Copy Matrix rain
+mkdir -p /path/to/mastodon/app/javascript/errordon/matrix/
+cp js/matrix_rain.js js/matrix_background.js \
+   /path/to/mastodon/app/javascript/errordon/matrix/
+
+# 4. Update common.ts entrypoint
+# Add to app/javascript/entrypoints/common.ts:
+# import { initMatrixTheme } from 'mastodon/features/errordon/matrix_theme';
+# import '@/errordon/matrix/index.js';
+# initMatrixTheme();
+
+# 5. Rebuild assets
+cd /path/to/mastodon
+RAILS_ENV=production bundle exec rails assets:precompile
+```
+
+---
+
+## 🖥️ Terminal Landing Page Installation
+
+The Matrix Terminal is a separate landing page with interactive CLI.
+
+### Install Terminal
+
+```bash
+# 1. Copy terminal files to public folder
+cp -r terminal/ /path/to/mastodon/public/matrix/
+
+# 2. Copy Rails controller
+cp rails/matrix_controller.rb \
+   /path/to/mastodon/app/controllers/
+
+# 3. Add routes to config/routes.rb
+cat << 'EOF' >> /path/to/mastodon/config/routes.rb
+
+# Matrix Terminal
+get '/matrix', to: 'matrix#index'
+post '/matrix/pass', to: 'matrix#pass'
+EOF
+
+# 4. Restart Mastodon
+systemctl restart mastodon-web mastodon-sidekiq
+```
 
 ### Terminal Commands
 
@@ -166,62 +164,160 @@ The Matrix Terminal is a cyberpunk-style landing page with:
 | `enter matrix` | Proceed to main site |
 | `help` | Show available commands |
 | `neo` / `morpheus` / `trinity` | Chat with characters |
-| `tetris` | Play hidden Tetris game |
+| `oracle` / `smith` | More characters |
+| `tetris` | 🎮 Play hidden Tetris game! |
 | `clear` | Clear terminal |
-
-### Install Terminal
-
-```bash
-# Copy to Mastodon public folder
-cp -r terminal/ /path/to/mastodon/public/matrix/
-
-# Add route (config/routes.rb)
-get '/matrix', to: 'matrix#index'
-post '/matrix/pass', to: 'matrix#pass'
-
-# Copy controller
-cp rails/matrix_controller.rb /path/to/mastodon/app/controllers/
-```
-
-## Browser Support
-
-- Chrome/Chromium 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
-
-## Compatibility
-
-Tested with:
-- Mastodon 4.0.x
-- Mastodon 4.1.x
-- Mastodon 4.2.x
-- Mastodon 4.3.x
-
-## Credits
-
-- Inspired by "The Matrix" film series
-- VT323 font by Peter Hull
-- Based on Mastodon's default theme
-
-## License
-
-AGPLv3 - Compatible with Mastodon's license.
-
-## Contributing
-
-Pull requests welcome! Please follow the existing code style.
-
-## Links
-
-- [Mastodon](https://github.com/mastodon/mastodon)
-- [Errordon](https://github.com/error-wtf/errordon) - Full fork with this theme included
-- [VT323 Font](https://fonts.google.com/specimen/VT323)
+| `exit` | Close terminal |
 
 ---
 
-<div align="center">
+## 🎨 Color Variants
 
-**Matrix Theme** — *See the code* 🟢
+Set via environment variable:
 
-</div>
+```bash
+# In .env.production
+MATRIX_COLOR=green    # Classic (default)
+MATRIX_COLOR=red      # Aggressive red
+MATRIX_COLOR=blue     # Cyber blue
+MATRIX_COLOR=purple   # Cyberpunk purple
+```
+
+---
+
+## 😀 Custom Emojis Installation
+
+```bash
+# 1. Copy all emojis to Mastodon's custom emoji folder
+cp emojis/*.svg /path/to/mastodon/public/emoji/custom/
+
+# 2. Import via Rails console (or toot_ctl)
+cd /path/to/mastodon
+RAILS_ENV=production bin/rails c
+
+# In Rails console:
+Dir.glob('public/emoji/custom/*.svg').each do |path|
+  shortcode = File.basename(path, '.svg')
+  CustomEmoji.find_or_create_by!(shortcode: shortcode) do |e|
+    e.image = File.open(path)
+    e.visible_in_picker = true
+  end
+end
+```
+
+### Popular Emojis Included
+
+| Emoji | Shortcode | Description |
+|-------|-----------|-------------|
+| 💊 | `:red_pill:` `:blue_pill:` | Matrix pills |
+| 👨‍💻 | `:hacker:` | Hacker face |
+| 🐱 | `:hacker_cat:` | Hacker cat |
+| ☕ | `:coffee_code:` | Code & coffee |
+| 🖥️ | `:terminal:` | Terminal |
+| 🐧 | `:linux:` `:tux:` | Linux |
+| 🐳 | `:docker:` | Docker |
+| 🔒 | `:vpn:` `:tor:` | Privacy |
+| 💀 | `:skull_matrix:` | Matrix skull |
+| 🤖 | `:robot:` `:cyborg:` | Robots |
+
+---
+
+## 🐳 Docker / nginx Deployment
+
+### nginx Configuration
+
+```bash
+# Copy nginx config
+sudo cp deploy/nginx.conf /etc/nginx/sites-available/mastodon-matrix
+
+# Edit and replace 'example.com' with your domain
+sudo nano /etc/nginx/sites-available/mastodon-matrix
+
+# Enable site
+sudo ln -sf /etc/nginx/sites-available/mastodon-matrix \
+            /etc/nginx/sites-enabled/
+
+# Get SSL certificate
+sudo certbot --nginx -d yourdomain.com
+
+# Test and reload
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+### systemd Service
+
+```bash
+# Copy service file
+sudo cp deploy/mastodon-matrix.service \
+        /etc/systemd/system/mastodon.service
+
+# Edit paths if needed
+sudo nano /etc/systemd/system/mastodon.service
+
+# Enable and start
+sudo systemctl daemon-reload
+sudo systemctl enable mastodon
+sudo systemctl start mastodon
+```
+
+---
+
+## ⚙️ Environment Variables
+
+```bash
+# Theme settings
+ERRORDON_MATRIX_THEME_ENABLED=true   # Enable Matrix theme by default
+ERRORDON_THEME=matrix                # Theme name
+MATRIX_COLOR=green                   # Color variant
+
+# Terminal protection
+MATRIX_TERMINAL_ENABLED=true         # Require terminal before login
+```
+
+---
+
+## 🔧 Customization
+
+### Modify Colors
+
+Edit `styles/matrix_theme.scss`:
+
+```scss
+// Near the top of the file
+$matrix-primary: #00ff00;        // Main green
+$matrix-background: #000000;     // Background
+$matrix-text: #00ff00;           // Text color
+```
+
+### Disable Matrix Rain
+
+Comment out in `rails/entrypoints/common.ts`:
+
+```typescript
+// import '@/errordon/matrix/index.js';
+```
+
+### Change Terminal Messages
+
+Edit `terminal/talk_db_*.json` files for character responses.
+
+---
+
+## 📝 License
+
+AGPLv3 - Same as Mastodon
+
+---
+
+## 🙏 Credits
+
+- Original Mastodon by Eugen Rochko & contributors
+- Matrix theme by Errordon team
+- Inspired by "The Matrix" (1999)
+
+---
+
+## 🆘 Support
+
+- GitHub Issues: [Report bugs](https://github.com/error-wtf/mastodon-matrix-theme/issues)
+- Mastodon: [@admin@error.wtf](https://error.wtf/@admin)
