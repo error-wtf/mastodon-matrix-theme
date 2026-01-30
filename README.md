@@ -315,6 +315,34 @@ Edit `terminal/talk_db_*.json` files for character responses.
 
 ---
 
+## 🏷️ Rebrand to Your Instance Name
+
+Want to change "Errordon" to your own instance name? Use the rebrand scripts:
+
+### Linux/macOS
+```bash
+./rebrand.sh "YourInstanceName"
+```
+
+### Windows PowerShell
+```powershell
+.\rebrand.ps1 -NewName "YourInstanceName"
+```
+
+### What Gets Changed
+
+| Category | Before | After |
+|----------|--------|-------|
+| Display names | ERRORDON | YOURNAME |
+| File names | `errordon_matrix.scss` | `yourname_matrix.scss` |
+| Environment vars | `ERRORDON_THEME` | `YOURNAME_THEME` |
+| Ruby namespace | `Errordon::` | `Yourname::` |
+| localStorage | `errordon_matrix_theme` | `yourname_matrix_theme` |
+
+📖 See [docs/BRANDING.md](docs/BRANDING.md) for detailed manual instructions.
+
+---
+
 ## 📝 License
 
 AGPLv3 - Same as Mastodon
