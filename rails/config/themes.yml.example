@@ -1,0 +1,13 @@
+# Mastodon Themes Configuration
+# Location: config/themes.yml
+#
+# Note: Matrix theme doesn't need to be registered here!
+# It works via body class toggle (theme-matrix), not as a separate theme file.
+# This is intentional - it allows runtime switching via Ctrl+Shift+M
+
+default: styles/application.scss
+contrast: styles/contrast.scss
+mastodon-light: styles/mastodon-light.scss
+
+# Optional: If you want Matrix as a selectable theme in user preferences:
+# matrix: styles/errordon_matrix.scss
