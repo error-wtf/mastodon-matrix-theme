@@ -635,36 +635,35 @@ body.theme-matrix {
   }
   
   // ==========================================================================
-  // PANEL OPACITY (Increased for better readability)
-  // Previous: 0.85-0.88, Now: 0.92-0.95
+  // PANEL OPACITY - 70% to show matrix rain through content
   // ==========================================================================
   
   // Columns - primary content containers
   .column,
   .drawer {
-    background: rgba(0, 0, 0, 0.93) !important;
+    background: rgba(0, 0, 0, 0.7) !important;
     backdrop-filter: blur(2px);
   }
   
   .drawer__inner {
-    background: rgba(0, 0, 0, 0.93) !important;
+    background: rgba(0, 0, 0, 0.7) !important;
   }
   
-  // Posts - high opacity for maximum readability
+  // Posts
   .status,
   .detailed-status {
-    background: rgba(0, 0, 0, 0.92) !important;
+    background: rgba(0, 0, 0, 0.7) !important;
   }
   
-  // Navigation panel - most opaque for clarity
+  // Navigation panel
   .navigation-panel {
-    background: rgba(0, 0, 0, 0.95) !important;
+    background: rgba(0, 0, 0, 0.7) !important;
   }
   
   // Compose form area
   .compose-form__autosuggest-wrapper,
   .compose-form {
-    background: rgba(0, 0, 0, 0.95) !important;
+    background: rgba(0, 0, 0, 0.7) !important;
   }
   
   // Modals - fully opaque (no rain distraction)
@@ -1325,7 +1324,7 @@ body.theme-matrix {
   .filter-bar,
   .search-header,
   .explore__search-header {
-    background: rgba(0, 0, 0, 0.9) !important;
+    background: rgba(0, 0, 0, 0.7) !important;
     border-color: var(--matrix-primary-dark) !important;
   }
 
@@ -1665,7 +1664,7 @@ body.theme-matrix {
   .getting-started,
   .getting-started__wrapper,
   .getting-started__footer {
-    background: rgba(0, 0, 0, 0.85) !important;
+    background: rgba(0, 0, 0, 0.7) !important;
   }
 
   .navigation-panel__menu a,
@@ -1687,7 +1686,7 @@ body.theme-matrix {
   .compose-form__warning,
   .reply-indicator,
   .reply-indicator__content {
-    background: rgba(0, 0, 0, 0.8) !important;
+    background: rgba(0, 0, 0, 0.7) !important;
     color: $matrix-text !important;
   }
 
@@ -1702,7 +1701,7 @@ body.theme-matrix {
   .public-account-header__bar,
   .public-account-header__tabs,
   .account-timeline__header {
-    background: rgba(0, 0, 0, 0.85) !important;
+    background: rgba(0, 0, 0, 0.7) !important;
   }
 
   // --- PROFILE VERIFICATION PAGE (shown in screenshot) ---
@@ -1715,7 +1714,7 @@ body.theme-matrix {
   .verification-card__item,
   .website-preview,
   .preview-card {
-    background: rgba(0, 0, 0, 0.9) !important;
+    background: rgba(0, 0, 0, 0.7) !important;
     color: $matrix-text !important;
   }
 
