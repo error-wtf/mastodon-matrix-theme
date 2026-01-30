@@ -385,13 +385,20 @@ Want to change "Matrix" to your own instance name? Use the rebrand scripts:
 
 ## 📝 License
 
-AGPLv3 - Same as Mastodon
+**Theme & Code:** [Anti-Capitalist Software License 1.4](https://anticapitalist.software/)
+
+**Emojis:**
+- **OpenMoji** (most tech emojis): [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) - https://openmoji.org
+- **Political emojis** (acab, antifa, fcknzs, etc.): Custom designs, free to use
+
+> OpenMoji emojis by the OpenMoji project (https://openmoji.org). License: CC BY-SA 4.0
 
 ---
 
 ## 🙏 Credits
 
 - **[Mastodon](https://github.com/mastodon/mastodon)** - Original software by Eugen Rochko & contributors
+- **[OpenMoji](https://openmoji.org)** - Open source emoji library (CC BY-SA 4.0) - Created by students at HfG Schwäbisch Gmünd
 - **Matrix Theme** - Developed by the Errordon team
 - **Inspiration** - "The Matrix" (1999) by the Wachowskis
 
