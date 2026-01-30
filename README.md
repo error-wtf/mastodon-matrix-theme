@@ -1,8 +1,20 @@
 # 🟢 Mastodon Matrix Theme
 
-A complete cyberpunk Matrix-style theme package for Mastodon, featuring an interactive terminal landing page, matrix rain animations, custom emojis, and full deployment configurations.
+[![Mastodon](https://img.shields.io/badge/Mastodon-v4.3+-6364FF?logo=mastodon&logoColor=white)](https://github.com/mastodon/mastodon)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](https://github.com/error-wtf/mastodon-matrix-theme/releases)
+
+> 🎬 A cyberpunk Matrix-style theme for [Mastodon](https://github.com/mastodon/mastodon) - the decentralized social network.
+
+A complete theme package featuring an interactive terminal landing page, matrix rain animations, custom emojis, and full deployment configurations.
 
 ![Matrix Theme Preview](screenshots/preview.png)
+
+## 🔗 Links
+
+- **Original Mastodon:** [github.com/mastodon/mastodon](https://github.com/mastodon/mastodon)
+- **Live Demo:** [exit-matrix.net/@error](https://exit-matrix.net/@error)
+- **Issues:** [Report bugs](https://github.com/error-wtf/mastodon-matrix-theme/issues)
 
 ## ✨ Features
 
@@ -11,7 +23,7 @@ A complete cyberpunk Matrix-style theme package for Mastodon, featuring an inter
 | 🎨 **Matrix Theme** | Full SCSS theme with 3200+ lines of cyberpunk styling |
 | 🌧️ **Matrix Rain** | Animated falling code background (Web Worker based) |
 | 💻 **Terminal Landing** | Interactive CLI landing page with bot protection |
-| 🤖 **AI Characters** | Chat with Neo, Morpheus, Trinity, Oracle, Smith |
+| 🤖 **Pseudo-AI Chat** | Chat with Neo, Morpheus, Trinity, Oracle, Smith |
 | 🎮 **Easter Eggs** | Hidden Tetris game! |
 | 🎨 **Color Variants** | Green, Red, Blue, Purple themes |
 | 😀 **120+ Emojis** | Custom hacker/tech themed emojis |
@@ -43,7 +55,7 @@ mastodon-matrix-theme/
 │   ├── tetris.html                     # 🎮 Easter egg: Tetris!
 │   ├── tetris-script.js                # Tetris game logic
 │   ├── tetris-style.css                # Tetris styles
-│   └── talk_db_*.json                  # AI chat character databases
+│   └── talk_db_*.json                  # Pseudo-AI chat character databases
 │
 ├── emojis/                             # 😀 120+ Custom Emojis
 │   ├── hacker.svg                      # Hacker face
@@ -311,13 +323,27 @@ AGPLv3 - Same as Mastodon
 
 ## 🙏 Credits
 
-- Original Mastodon by Eugen Rochko & contributors
-- Matrix theme by Errordon team
-- Inspired by "The Matrix" (1999)
+- **[Mastodon](https://github.com/mastodon/mastodon)** - Original software by Eugen Rochko & contributors
+- **Matrix Theme** - Developed by the Errordon team
+- **Inspiration** - "The Matrix" (1999) by the Wachowskis
 
 ---
 
 ## 🆘 Support
 
-- GitHub Issues: [Report bugs](https://github.com/error-wtf/mastodon-matrix-theme/issues)
-- Mastodon: [@admin@error.wtf](https://error.wtf/@admin)
+- **GitHub Issues:** [Report bugs](https://github.com/error-wtf/mastodon-matrix-theme/issues)
+- **Mastodon:** [@error@exit-matrix.net](https://exit-matrix.net/@error)
+
+---
+
+## ⭐ Star History
+
+If you like this theme, please give it a star! It helps others discover it.
+
+---
+
+<p align="center">
+  <a href="https://github.com/mastodon/mastodon">
+    <img src="https://img.shields.io/badge/Built%20for-Mastodon-6364FF?style=for-the-badge&logo=mastodon&logoColor=white" alt="Built for Mastodon">
+  </a>
+</p>
