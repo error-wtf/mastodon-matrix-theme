@@ -1,7 +1,7 @@
 # 🟢 Mastodon Matrix Theme
 
 [![Mastodon](https://img.shields.io/badge/Mastodon-v4.3+-6364FF?logo=mastodon&logoColor=white)](https://github.com/mastodon/mastodon)
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![License: Anti-Capitalist](https://img.shields.io/badge/License-Anti--Capitalist%201.4-red.svg)](https://anticapitalist.software/)
 [![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](https://github.com/error-wtf/mastodon-matrix-theme/releases)
 
 > 🎬 A cyberpunk Matrix-style theme for [Mastodon](https://github.com/mastodon/mastodon) - the decentralized social network.
