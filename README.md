@@ -13,7 +13,7 @@ A complete theme package featuring an interactive terminal landing page, matrix 
 ## 🔗 Links
 
 - **Original Mastodon:** [github.com/mastodon/mastodon](https://github.com/mastodon/mastodon)
-- **Live Demo:** [exit-matrix.net/@error](https://exit-matrix.net/@error)
+- **Live Demo:** *Deploy your own instance to see it in action!*
 - **Issues:** [Report bugs](https://github.com/error-wtf/mastodon-matrix-theme/issues)
 
 ## ✨ Features
@@ -407,7 +407,7 @@ Want to change "Matrix" to your own instance name? Use the rebrand scripts:
 ## 🆘 Support
 
 - **GitHub Issues:** [Report bugs](https://github.com/error-wtf/mastodon-matrix-theme/issues)
-- **Mastodon:** [@error@exit-matrix.net](https://exit-matrix.net/@error)
+- **Mastodon:** *Open an issue on GitHub for support*
 
 ---
 
